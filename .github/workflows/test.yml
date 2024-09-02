@@ -8,8 +8,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
-              with:
-                  version: latest
             - name: Install modules
               run: pnpm install
             - name: Run Svelte-Check
@@ -19,8 +17,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
-              with:
-                  version: latest
             - name: Install modules
               run: pnpm install
             - name: Run ESLint
@@ -30,8 +26,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
-              with:
-                  version: latest
             - name: Install modules
               run: pnpm install
             - name: Run Prettier
@@ -41,8 +35,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
-              with:
-                  version: latest
             - name: Install modules
               run: pnpm install
             - name: Run tsc
@@ -52,8 +44,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
-              with:
-                  version: latest
             - name: Install modules
               run: pnpm install
             - name: Run build
