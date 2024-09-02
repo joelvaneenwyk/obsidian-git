@@ -1,13 +1,15 @@
 <!-- tslint:disable ts(2345)  -->
 <script lang="ts">
-    import ObsidianGit from "src/main";
-    import { FileType, StatusRootTreeItem, TreeItem } from "src/types";
+    import type ObsidianGit from "src/main";
+    import type { StatusRootTreeItem, TreeItem } from "src/types";
+    import { FileType } from "src/types";
     import { DiscardModal } from "src/ui/modals/discardModal";
     import { slide } from "svelte/transition";
-    import GitView from "../sourceControl";
+    import type GitView from "../sourceControl";
     import FileComponent from "./fileComponent.svelte";
     import PulledFileComponent from "./pulledFileComponent.svelte";
     import StagedFileComponent from "./stagedFileComponent.svelte";
+    import { mayTriggerFileMenu } from "src/utils";
     export let hierarchy: StatusRootTreeItem;
     export let plugin: ObsidianGit;
     export let view: GitView;
@@ -47,6 +49,8 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <main class:topLevel>
     {#each hierarchy.children as entity}
         {#if entity.data}
@@ -69,13 +73,20 @@
             </div>
         {:else}
             <div
-                on:click={() => fold(entity)}
+                on:click|stopPropagation={() => fold(entity)}
+                on:auxclick|stopPropagation={(event) =>
+                    mayTriggerFileMenu(
+                        view.app,
+                        event,
+                        entity.vaultPath,
+                        view.leaf,
+                        "git-source-control"
+                    )}
                 class="tree-item nav-folder"
                 class:is-collapsed={closed[entity.title]}
             >
                 <div
                     class="tree-item-self is-clickable nav-folder-title"
-                    aria-label-position={side}
                     data-tooltip-position={side}
                     aria-label={entity.vaultPath}
                 >

@@ -1,6 +1,7 @@
 import * as cssColorConverter from "css-color-converter";
 import deepEqual from "deep-equal";
-import { Keymap, RGB, WorkspaceLeaf, moment } from "obsidian";
+import type { App, RGB, WorkspaceLeaf } from "obsidian";
+import { Keymap, Menu, moment } from "obsidian";
 
 export const worthWalking = (filepath: string, root?: string) => {
     if (filepath === "." || root == null || root.length === 0 || root === ".") {
@@ -24,6 +25,23 @@ export function getNewLeaf(event?: MouseEvent): WorkspaceLeaf | undefined {
         leaf = app.workspace.getLeaf(false);
     }
     return leaf;
+}
+
+export function mayTriggerFileMenu(
+    app: App,
+    event: MouseEvent,
+    filePath: string,
+    view: WorkspaceLeaf,
+    source: string
+) {
+    if (event.button == 2) {
+        const file = app.vault.getAbstractFileByPath(filePath);
+        if (file != null) {
+            const fileMenu = new Menu();
+            app.workspace.trigger("file-menu", fileMenu, file, source, view);
+            fileMenu.showAtPosition({ x: event.pageX, y: event.pageY });
+        }
+    }
 }
 
 /**
@@ -107,4 +125,9 @@ export function splitRemoteBranch(
 export function getDisplayPath(path: string): string {
     if (path.endsWith("/")) return path;
     return path.split("/").last()!.replace(".md", "");
+}
+
+export function formatMinutes(minutes: number): string {
+    if (minutes === 1) return "1 minute";
+    return `${minutes} minutes`;
 }

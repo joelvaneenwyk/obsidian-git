@@ -1,6 +1,6 @@
-import { App } from "obsidian";
-import ObsidianGit from "../main";
-import {
+import type { App } from "obsidian";
+import type ObsidianGit from "../main";
+import type {
     BranchInfo,
     DiffFile,
     FileStatusResult,
@@ -24,9 +24,13 @@ export abstract class GitManager {
         message: string;
         status?: Status;
         unstagedFiles?: UnstagedFile[];
+        amend?: boolean;
     }): Promise<number | undefined>;
 
-    abstract commit(message?: string): Promise<number | undefined>;
+    abstract commit(_: {
+        message: string;
+        amend?: boolean;
+    }): Promise<number | undefined>;
 
     abstract stageAll(_: { dir?: string; status?: Status }): Promise<void>;
 
@@ -42,7 +46,7 @@ export abstract class GitManager {
 
     abstract pull(): Promise<FileStatusResult[] | undefined>;
 
-    abstract push(): Promise<number>;
+    abstract push(): Promise<number | undefined>;
 
     abstract getUnpushedCommits(): Promise<number>;
 
@@ -105,7 +109,8 @@ export abstract class GitManager {
 
     abstract getLastCommitTime(): Promise<Date | undefined>;
 
-    getVaultPath(path: string): string {
+    // Constructs a path relative to the vault from a path relative to the git repository
+    getRelativeVaultPath(path: string): string {
         if (this.plugin.settings.basePath) {
             return this.plugin.settings.basePath + "/" + path;
         } else {
@@ -113,10 +118,22 @@ export abstract class GitManager {
         }
     }
 
-    asRepositoryRelativePath(path: string, relativeToVault: boolean): string {
-        return relativeToVault && this.plugin.settings.basePath.length > 0
-            ? path.substring(this.plugin.settings.basePath.length + 1)
-            : path;
+    // Constructs a path relative to the git repository from a path relative to the vault
+    //
+    // @param doConversion - If false, the path is returned as is. This is added because that parameter is often passed on to functions where this method is called.
+    getRelativeRepoPath(
+        filePath: string,
+        doConversion: boolean = true
+    ): string {
+        if (doConversion) {
+            if (this.plugin.settings.basePath.length > 0) {
+                //Expect the case that the git repository is located inside the vault on mobile platform currently.
+                return filePath.substring(
+                    this.plugin.settings.basePath.length + 1
+                );
+            }
+        }
+        return filePath;
     }
 
     private _getTreeStructure<T = DiffFile | FileStatusResult>(
@@ -143,7 +160,7 @@ export abstract class GitManager {
                 list.push({
                     title: title,
                     path: path,
-                    vaultPath: this.getVaultPath(path),
+                    vaultPath: this.getRelativeVaultPath(path),
                     children: this._getTreeStructure(
                         childrenWithSameTitle,
                         (beginLength > 0
@@ -156,7 +173,7 @@ export abstract class GitManager {
                     title: restPath,
                     data: first,
                     path: first.path,
-                    vaultPath: this.getVaultPath(first.path),
+                    vaultPath: this.getRelativeVaultPath(first.path),
                 });
                 children.remove(first);
             }
@@ -240,20 +257,26 @@ export abstract class GitManager {
             status = status ?? (await this.status());
 
             const changeset: { [key: string]: string[] } = {};
-            status.staged.forEach((value: FileStatusResult) => {
-                if (value.index in changeset) {
-                    changeset[value.index].push(value.path);
-                } else {
-                    changeset[value.index] = [value.path];
+            let files = "";
+            // If there are more than 100 files, we don't list them all
+            if (status.staged.length < 100) {
+                status.staged.forEach((value: FileStatusResult) => {
+                    if (value.index in changeset) {
+                        changeset[value.index].push(value.path);
+                    } else {
+                        changeset[value.index] = [value.path];
+                    }
+                });
+
+                const chunks = [];
+                for (const [action, files] of Object.entries(changeset)) {
+                    chunks.push(action + " " + files.join(" "));
                 }
-            });
 
-            const chunks = [];
-            for (const [action, files] of Object.entries(changeset)) {
-                chunks.push(action + " " + files.join(" "));
+                files = chunks.join(", ");
+            } else {
+                files = "Too many files to list";
             }
-
-            const files = chunks.join(", ");
 
             template = template.replace("{{files}}", files);
         }
@@ -264,14 +287,15 @@ export abstract class GitManager {
             moment().format(this.plugin.settings.commitDateFormat)
         );
         if (this.plugin.settings.listChangedFilesInMessageBody) {
-            template =
-                template +
-                "\n\n" +
-                "Affected files:" +
-                "\n" +
-                (status ?? (await this.status())).staged
-                    .map((e) => e.path)
-                    .join("\n");
+            const status2 = status ?? (await this.status());
+            let files = "";
+            // If there are more than 100 files, we don't list them all
+            if (status2.staged.length < 100) {
+                files = status2.staged.map((e) => e.path).join("\n");
+            } else {
+                files = "Too many files to list";
+            }
+            template = template + "\n\n" + "Affected files:" + "\n" + files;
         }
         return template;
     }

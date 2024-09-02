@@ -1,5 +1,5 @@
 import { Platform } from "obsidian";
-import { ObsidianGitSettings } from "./types";
+import type { ObsidianGitSettings } from "./types";
 export const DATE_FORMAT = "YYYY-MM-DD";
 export const DATE_TIME_FORMAT_MINUTES = `${DATE_FORMAT} HH:mm`;
 export const DATE_TIME_FORMAT_SECONDS = `${DATE_FORMAT} HH:mm:ss`;
@@ -17,6 +17,7 @@ export const DEFAULT_SETTINGS: Omit<ObsidianGitSettings, "autoCommitMessage"> =
         disablePush: false,
         pullBeforePush: true,
         disablePopups: false,
+        disablePopupsForNoChanges: false,
         listChangedFilesInMessageBody: false,
         showStatusBar: true,
         updateSubmodules: false,
@@ -35,6 +36,8 @@ export const DEFAULT_SETTINGS: Omit<ObsidianGitSettings, "autoCommitMessage"> =
         submoduleRecurseCheckout: false,
         gitDir: "",
         showFileMenu: true,
+        authorInHistoryView: "hide",
+        dateInHistoryView: false,
         lineAuthor: {
             show: false,
             followMovement: "inactive",

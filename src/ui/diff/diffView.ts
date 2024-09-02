@@ -1,9 +1,10 @@
 import { html } from "diff2html";
-import { ItemView, Platform, ViewStateResult, WorkspaceLeaf } from "obsidian";
+import type { ViewStateResult, WorkspaceLeaf } from "obsidian";
+import { ItemView, Platform } from "obsidian";
 import { DIFF_VIEW_CONFIG } from "src/constants";
 import { SimpleGit } from "src/gitManager/simpleGit";
-import ObsidianGit from "src/main";
-import { DiffViewState } from "src/types";
+import type ObsidianGit from "src/main";
+import type { DiffViewState } from "src/types";
 
 export default class DiffView extends ItemView {
     parser: DOMParser;
@@ -12,7 +13,10 @@ export default class DiffView extends ItemView {
     gitRefreshBind = this.refresh.bind(this);
     gitViewRefreshBind = this.refresh.bind(this);
 
-    constructor(leaf: WorkspaceLeaf, private plugin: ObsidianGit) {
+    constructor(
+        leaf: WorkspaceLeaf,
+        private plugin: ObsidianGit
+    ) {
         super(leaf);
         this.parser = new DOMParser();
         this.navigation = true;
@@ -89,7 +93,9 @@ export default class DiffView extends ItemView {
                         ].join("\n");
                     } else {
                         const content = await this.app.vault.adapter.read(
-                            this.plugin.gitManager.getVaultPath(this.state.file)
+                            this.plugin.gitManager.getRelativeVaultPath(
+                                this.state.file
+                            )
                         );
                         const header = `--- /dev/null
 +++ ${this.state.file}

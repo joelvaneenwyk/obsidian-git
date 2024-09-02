@@ -1,6 +1,8 @@
-# Obsidian Git
+# Git
 
-Plugin that allows you to back up your [Obsidian.md](https://obsidian.md) vault to a remote Git repository (e.g. private repo on GitHub).
+A Community Plugin for [Obsidian.md](https://obsidian.md) to manage your vault with Git.
+
+## Documentation
 
 Requirements, installation steps (including setup for mobile), tips and tricks, common issues and more can be found in the [documentation](https://publish.obsidian.md/git-doc).
 
@@ -8,13 +10,12 @@ For mobile users see [Mobile](#mobile) section below.
 
 ## Highlighted Features
 
--   Automatic vault backup every X minutes
--   Pull changes from remote repository on Obsidian startup
--   Assign hotkeys for pulling/pushing changes to a remote repository
--   Manage different repositories via Git submodules (after enabling this feature in settings)
--   The Source Control View allows you to stage and commit individual files. It can be opened with the `Open Source Control View` command.
--   The History View shows the commits and their changed files. So basically an integrated `git log`. It can be opened with the `Open History View` command.
--   For viewing the history of a file, I strongly recommend you the [Version History Diff](obsidian://show-plugin?id=obsidian-version-history-diff) plugin
+-   Automatic vault backup (pull, commit, push) on a schedule.
+-   Pull changes from remote repository on Obsidian startup.
+-   Manage different repositories via Git submodules (Opt-in in settings) (Desktop only).
+-   Stage, commit and diff individual files via the Source Control View. Open it with the `Open Source Control View` command.
+-   List your commits and their changed files (like a `git log`) via the History View. Open it with the `Open History View` command.
+-   For viewing the detailed history of a file, I strongly recommend you the [Version History Diff](obsidian://show-plugin?id=obsidian-version-history-diff) plugin.
 
 ### Source Control View
 
@@ -24,7 +25,7 @@ For mobile users see [Mobile](#mobile) section below.
 
 ![History View](https://raw.githubusercontent.com/denolehov/obsidian-git/master/images/history-view.png)
 
-## Available Commands
+## Available Commands (not exhaustive)
 
 -   Changes
     -   `List changed files`: Lists all changes in a modal
@@ -73,9 +74,11 @@ Please use AppImage instead ([Linux installation guide](https://publish.obsidian
 
 ## Mobile
 
-### Restrictions of the mobile version
+The git implementation on mobile is **very unstable**!
 
-I am using [isomorphic-git](https://isomorphic-git.org/), which is a re-implementation of Git in JavaScript, because you cannot use native Git on Android or iOS.
+### Restrictions
+
+The mobile version is supported by [isomorphic-git](https://isomorphic-git.org/), which is a re-implementation of Git in JavaScript, because you cannot use native Git on Android or iOS.
 
 -   SSH authentication is not supported ([isomorphic-git issue](https://github.com/isomorphic-git/isomorphic-git/issues/231))
 -   Repo size is limited, because of memory restrictions
@@ -84,8 +87,14 @@ I am using [isomorphic-git](https://isomorphic-git.org/), which is a re-implemen
 
 ### Performance on mobile
 
-> **Warning**
-> Depending on your device and available free RAM, Obsidian may crash on clone/pull. I don't know how to fix this. If that's the case for you, I have to admit this plugin won't work for you. So commenting on any issue or creating a new one won't help. I am sorry.
+> [!caution]
+> Depending on your device and available free RAM, Obsidian may
+>
+> -   crash on clone/pull
+> -   create buffer overflow errors
+> -   run indefinitely.
+>
+> It's caused by the underlying git implementation on mobile, which is not efficient. I don't know how to fix this. If that's the case for you, I have to admit this plugin won't work for you. So commenting on any issue or creating a new one won't help. I am sorry.
 
 **Setup:** iPad Pro M1 with a [repo](https://github.com/Vinzent03/obsidian-git-stress-test) of 3000 files reduced from [10000 markdown files](https://github.com/Zettelkasten-Method/10000-markdown-files)
 
@@ -97,10 +106,10 @@ The fastest way to work on mobile if you have a large repo/vault is to stage ind
 
 The Line Authoring feature was developed by [GollyTicker](https://github.com/GollyTicker), so any questions may be best answered by him.
 
-If you have any kind of feedback or questions, feel free to reach out via GitHub issues or `@Vinadon` on [Obsidian Discord server](https://discord.com/invite/veuWUTm).
+If you have any kind of feedback or questions, feel free to reach out via GitHub issues or `vinzent3` on [Obsidian Discord server](https://discord.com/invite/veuWUTm).
 
-This plugin was initial developed by [denolehov](https://github.com/denolehov). Since March 2021, it is [Vinzent03](https://github.com/Vinzent03) who is developing on this plugin.
+This plugin was initial developed by [denolehov](https://github.com/denolehov). Since March 2021, it's me [Vinzent03](https://github.com/Vinzent03) who is developing this plugin. That's why the GitHub repository got moved to my account in July 2024.
 
-If you want to support me ([Vinzent03](https://github.com/Vinzent03)) you can support me on Ko-fi
+If you find this plugin useful and would like to support its development, you can support me on Ko-fi.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F1F195IQ5)

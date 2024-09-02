@@ -1,9 +1,9 @@
 <script lang="ts">
     import { setIcon, TFile } from "obsidian";
     import { DIFF_VIEW_CONFIG } from "src/constants";
-    import { DiffFile } from "src/types";
-    import { getDisplayPath, getNewLeaf } from "src/utils";
-    import HistoryView from "../historyView";
+    import type { DiffFile } from "src/types";
+    import { getDisplayPath, getNewLeaf, mayTriggerFileMenu } from "src/utils";
+    import type HistoryView from "../historyView";
 
     export let diff: DiffFile;
     export let view: HistoryView;
@@ -37,9 +37,22 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <main
     on:click|stopPropagation={showDiff}
-    on:auxclick|stopPropagation={showDiff}
+    on:auxclick|stopPropagation={(event) => {
+        if (event.button == 2)
+            mayTriggerFileMenu(
+                view.app,
+                event,
+                diff.vault_path,
+                view.leaf,
+                "git-history"
+            );
+        else showDiff(event);
+    }}
     on:focus
     class="tree-item nav-file"
 >
@@ -48,7 +61,6 @@
         class:is-active={view.plugin.lastDiffViewState?.file ==
             diff.vault_path && view.plugin.lastDiffViewState?.hash}
         data-path={diff.vault_path}
-        aria-label-position={side}
         data-tooltip-position={side}
         aria-label={diff.vault_path}
     >
@@ -57,7 +69,7 @@
         </div>
         <div class="git-tools">
             <div class="buttons">
-                {#if view.app.vault.getAbstractFileByPath(diff.vault_path)}
+                {#if view.app.vault.getAbstractFileByPath(diff.vault_path) instanceof TFile}
                     <div
                         data-icon="go-to-file"
                         aria-label="Open File"

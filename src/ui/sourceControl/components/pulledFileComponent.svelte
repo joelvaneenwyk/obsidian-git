@@ -1,10 +1,9 @@
-<!-- @ts-ignore -->
 <script lang="ts">
     import { TFile } from "obsidian";
     import { hoverPreview } from "obsidian-community-lib";
-    import { FileStatusResult } from "src/types";
-    import { getDisplayPath, getNewLeaf } from "src/utils";
-    import GitView from "../sourceControl";
+    import type { FileStatusResult } from "src/types";
+    import { getDisplayPath, getNewLeaf, mayTriggerFileMenu } from "src/utils";
+    import type GitView from "../sourceControl";
 
     export let change: FileStatusResult;
     export let view: GitView;
@@ -25,18 +24,28 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <main
     on:mouseover={hover}
     on:click|stopPropagation={open}
-    on:auxclick|stopPropagation={open}
+    on:auxclick|stopPropagation={(event) => {
+        if (event.button == 2)
+            mayTriggerFileMenu(
+                view.app,
+                event,
+                change.vault_path,
+                view.leaf,
+                "git-source-control"
+            );
+        else open(event);
+    }}
     on:focus
     class="tree-item nav-file"
 >
-    <!-- svelte-ignore a11y-unknown-aria-attribute -->
     <div
         class="tree-item-self is-clickable nav-file-title"
         data-path={change.vault_path}
-        aria-label-position={side}
         data-tooltip-position={side}
         aria-label={change.vault_path}
     >

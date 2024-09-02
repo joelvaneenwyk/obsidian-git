@@ -1,16 +1,13 @@
-import { Extension, Prec } from "@codemirror/state";
-import { TFile } from "obsidian";
+import type { Extension } from "@codemirror/state";
+import { Prec } from "@codemirror/state";
+import type { TFile } from "obsidian";
 import { subscribeNewEditor } from "src/lineAuthor/control";
 import { eventsPerFilePathSingleton } from "src/lineAuthor/eventsPerFilepath";
-import {
-    LineAuthoring,
-    lineAuthoringId,
-    LineAuthoringId,
-    lineAuthorState,
-} from "src/lineAuthor/model";
+import type { LineAuthoring, LineAuthoringId } from "src/lineAuthor/model";
+import { lineAuthorState, lineAuthoringId } from "src/lineAuthor/model";
 import { clearViewCache } from "src/lineAuthor/view/cache";
 import { lineAuthorGutter } from "src/lineAuthor/view/view";
-import ObsidianGit from "src/main";
+import type ObsidianGit from "src/main";
 
 export { previewColor } from "src/lineAuthor/view/gutter/coloring";
 /**
@@ -32,7 +29,7 @@ export class LineAuthorProvider {
 
     public async trackChanged(file: TFile) {
         this.trackChangedHelper(file).catch((reason) => {
-            console.warn("Obsidian Git: Error in trackChanged." + reason);
+            console.warn("Git: Error in trackChanged." + reason);
             return Promise.reject(reason);
         });
     }
@@ -42,7 +39,7 @@ export class LineAuthorProvider {
 
         if (file.path === undefined) {
             console.warn(
-                "Obsidian Git: Attempted to track change of undefined filepath. Unforeseen situation."
+                "Git: Attempted to track change of undefined filepath. Unforeseen situation."
             );
             return;
         }

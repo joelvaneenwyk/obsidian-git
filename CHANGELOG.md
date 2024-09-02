@@ -2,6 +2,110 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.26.0](https://github.com/denolehov/obsidian-git/compare/2.25.0...2.26.0) (2024-09-01)
+
+
+### Features
+
+* open source control view with ribbon button ([dea4d6f](https://github.com/denolehov/obsidian-git/commit/dea4d6f915492ecc3d43b259fbe8764b9c6210a4))
+
+
+### Bug Fixes
+
+* open diffs in new split with middle click ([65ef5ba](https://github.com/denolehov/obsidian-git/commit/65ef5ba2fa783717baaea24d05c6dcc8e760596d))
+* remove root folding line in git views ([b2df0ed](https://github.com/denolehov/obsidian-git/commit/b2df0ed27b2af948df06dcc45021005b8c54e363))
+
+## [2.25.0](https://github.com/denolehov/obsidian-git/compare/2.24.3...2.25.0) (2024-07-23)
+
+
+### Features
+
+* add context menu to git views ([115c4ba](https://github.com/denolehov/obsidian-git/commit/115c4baccaaf0e905fa8eefee8cb5f35abfff88f)), closes [#615](https://github.com/denolehov/obsidian-git/issues/615)
+
+
+### Bug Fixes
+
+* catch sidebar leaf being null ([86065c9](https://github.com/denolehov/obsidian-git/commit/86065c987bb478cbf65b4baca1745d7162041b5d))
+* don't require .git suffix to open file on github ([9b264bf](https://github.com/denolehov/obsidian-git/commit/9b264bffb49a36d86f8af4c17435de2e6ca6c580)), closes [#753](https://github.com/denolehov/obsidian-git/issues/753)
+* open file on github from submodule ([4981f8b](https://github.com/denolehov/obsidian-git/commit/4981f8bcc2eacda44fcebf8a95f458acd514febc)), closes [#592](https://github.com/denolehov/obsidian-git/issues/592)
+* use active color for buttons in file component ([c28d44b](https://github.com/denolehov/obsidian-git/commit/c28d44b1c6f358cdb0113ebcc4b1634a161dfdf2))
+
+### [2.24.3](https://github.com/denolehov/obsidian-git/compare/2.24.2...2.24.3) (2024-06-22)
+
+
+### Bug Fixes
+
+* Adjust git.cwd to use a relative path to git root ([#733](https://github.com/denolehov/obsidian-git/issues/733)) ([ed31553](https://github.com/denolehov/obsidian-git/commit/ed31553a8cf25548ab722c4edf40d8d0a20df4e8))
+* limit amount of files to list in commit msg ([a0416ed](https://github.com/denolehov/obsidian-git/commit/a0416edf5f3ac5d9adc9fc37cf9a9c932583ced4))
+* support vault in subdirectory of git repo ([#722](https://github.com/denolehov/obsidian-git/issues/722)) ([171693f](https://github.com/denolehov/obsidian-git/commit/171693f7fda542f4ba0452a54979d92c8ecfcdb6))
+
+### [2.24.2](https://github.com/denolehov/obsidian-git/compare/2.24.1...2.24.2) (2024-05-09)
+
+
+### Bug Fixes
+
+* ask for upstream branch in backup ([d1143f7](https://github.com/denolehov/obsidian-git/commit/d1143f7d643581ddf674b492921bf0aab9044643))
+* hide line authoring on small width window([#684](https://github.com/denolehov/obsidian-git/issues/684)) ([6a89424](https://github.com/denolehov/obsidian-git/commit/6a89424231ab45ca7741a6d9b96693f63ca40e6e))
+
+### [2.24.1](https://github.com/denolehov/obsidian-git/compare/2.24.0...2.24.1) (2024-03-12)
+
+
+### Bug Fixes
+
+* disable line authoring on mobile ([ac28656](https://github.com/denolehov/obsidian-git/commit/ac2865676135a22a81f8d1a440825e7583aa73ec))
+
+## [2.24.0](https://github.com/denolehov/obsidian-git/compare/2.23.2...2.24.0) (2024-03-04)
+
+
+### Features
+
+* show date and author in history view ([a6e33d3](https://github.com/denolehov/obsidian-git/commit/a6e33d30d1556c485cc2ac6467972aa471b94758)), closes [#691](https://github.com/denolehov/obsidian-git/issues/691)
+
+
+### Bug Fixes
+
+* update submodules without outer remote repo ([675cef5](https://github.com/denolehov/obsidian-git/commit/675cef52d4e0ebbd2d11ff2322aa21649574bf9d)), closes [#701](https://github.com/denolehov/obsidian-git/issues/701)
+
+### [2.23.2](https://github.com/denolehov/obsidian-git/compare/2.23.1...2.23.2) (2024-01-31)
+
+
+### Bug Fixes
+
+* many issues with list changed files ([8b3fc8b](https://github.com/denolehov/obsidian-git/commit/8b3fc8bd69b76193086d5b3a814546a9e3cf51ea)), closes [#655](https://github.com/denolehov/obsidian-git/issues/655)
+
+### [2.23.1](https://github.com/denolehov/obsidian-git/compare/2.23.0...2.23.1) (2024-01-29)
+
+
+### Bug Fixes
+
+* commit in source control view ([90985b1](https://github.com/denolehov/obsidian-git/commit/90985b1b7733eb39247b3aaa71ddc2482012f272)), closes [#686](https://github.com/denolehov/obsidian-git/issues/686)
+
+## [2.23.0](https://github.com/denolehov/obsidian-git/compare/2.22.2...2.23.0) (2024-01-28)
+
+
+### Features
+
+* add commit amend command ([8f10261](https://github.com/denolehov/obsidian-git/commit/8f10261b08a498b0fc8f989209c1e0b048a27c35)), closes [#648](https://github.com/denolehov/obsidian-git/issues/648)
+* add setting to disable 'No changes...' popups ([#676](https://github.com/denolehov/obsidian-git/issues/676)) ([bfd6de9](https://github.com/denolehov/obsidian-git/commit/bfd6de9092aaa18d7624b374d10873a179f12351))
+
+
+### Bug Fixes
+
+* fold only one item ([cd1d932](https://github.com/denolehov/obsidian-git/commit/cd1d93226a4e2f5ebfaa89ada97851c60f35a4fd)), closes [#680](https://github.com/denolehov/obsidian-git/issues/680)
+
+### [2.22.2](https://github.com/denolehov/obsidian-git/compare/2.22.1...2.22.2) (2024-01-26)
+
+### [2.22.1](https://github.com/denolehov/obsidian-git/compare/2.22.0...2.22.1) (2024-01-08)
+
+
+### Bug Fixes
+
+* allow different ssh remote user than git ([5b6400c](https://github.com/denolehov/obsidian-git/commit/5b6400cc85c827bc13e11ffa1bc0cbb3bd6cfd26)), closes [#664](https://github.com/denolehov/obsidian-git/issues/664)
+* create new remote ([1a4cca8](https://github.com/denolehov/obsidian-git/commit/1a4cca8baf20de91ce3ee825740a85f1d33c1744)), closes [#599](https://github.com/denolehov/obsidian-git/issues/599)
+* grammar improvement in settings ([#635](https://github.com/denolehov/obsidian-git/issues/635)) ([1d81577](https://github.com/denolehov/obsidian-git/commit/1d81577877ccb548b06fb91036a246aa442a41ae))
+* tooltip direction ([#600](https://github.com/denolehov/obsidian-git/issues/600)) ([a913303](https://github.com/denolehov/obsidian-git/commit/a91330381e83cfc2ece14186325b129d7fc9b6bf))
+* update settings grammar ([#656](https://github.com/denolehov/obsidian-git/issues/656)) ([d9e8be1](https://github.com/denolehov/obsidian-git/commit/d9e8be14b5dbb64a9b78b2d3fe56c474bd57596f))
+
 ## [2.22.0](https://github.com/denolehov/obsidian-git/compare/2.21.0...2.22.0) (2023-08-30)
 
 

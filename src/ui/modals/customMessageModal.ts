@@ -1,5 +1,5 @@
 import { SuggestModal } from "obsidian";
-import ObsidianGit from "src/main";
+import type ObsidianGit from "src/main";
 
 export class CustomMessageModal extends SuggestModal<string> {
     plugin: ObsidianGit;
@@ -7,7 +7,10 @@ export class CustomMessageModal extends SuggestModal<string> {
     resolve:
         | ((value: string | PromiseLike<string> | undefined) => void)
         | null = null;
-    constructor(plugin: ObsidianGit, private readonly fromAutoBackup: boolean) {
+    constructor(
+        plugin: ObsidianGit,
+        private readonly fromAutoBackup: boolean
+    ) {
         super(plugin.app);
         this.plugin = plugin;
         this.setPlaceholder(

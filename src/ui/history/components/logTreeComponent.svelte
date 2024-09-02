@@ -1,9 +1,9 @@
 <!-- tslint:disable ts(2345)  -->
 <script lang="ts">
-    import ObsidianGit from "src/main";
-    import { HistoryRootTreeItem, TreeItem } from "src/types";
+    import type ObsidianGit from "src/main";
+    import type { HistoryRootTreeItem, TreeItem } from "src/types";
     import { slide } from "svelte/transition";
-    import HistoryView from "../historyView";
+    import type HistoryView from "../historyView";
     import LogFileComponent from "./logFileComponent.svelte";
     export let hierarchy: HistoryRootTreeItem;
     export let plugin: ObsidianGit;
@@ -17,6 +17,8 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <main class:topLevel>
     {#each hierarchy.children as entity}
         {#if entity.data}
@@ -30,7 +32,6 @@
             >
                 <div
                     class="tree-item-self is-clickable nav-folder-title"
-                    aria-label-position={side}
                     data-tooltip-position={side}
                     aria-label={entity.vaultPath}
                     on:click={() => fold(entity)}

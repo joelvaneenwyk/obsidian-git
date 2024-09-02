@@ -1,17 +1,19 @@
 import { Errors } from "isomorphic-git";
-import {
-    debounce,
+import type {
     Debouncer,
     EventRef,
-    MarkdownView,
     Menu,
+    TAbstractFile,
+    WorkspaceLeaf,
+} from "obsidian";
+import {
+    debounce,
+    MarkdownView,
     normalizePath,
     Notice,
     Platform,
     Plugin,
-    TAbstractFile,
     TFile,
-    WorkspaceLeaf,
 } from "obsidian";
 import { LineAuthoringFeature } from "src/lineAuthor/lineAuthorIntegration";
 import { pluginRef } from "src/pluginGlobalRef";
@@ -26,20 +28,19 @@ import {
     HISTORY_VIEW_CONFIG,
     SOURCE_CONTROL_VIEW_CONFIG,
 } from "./constants";
-import { GitManager } from "./gitManager/gitManager";
+import type { GitManager } from "./gitManager/gitManager";
 import { IsomorphicGit } from "./gitManager/isomorphicGit";
 import { SimpleGit } from "./gitManager/simpleGit";
 import { openHistoryInGitHub, openLineInGitHub } from "./openInGitHub";
 import { LocalStorageSettings } from "./setting/localStorageSettings";
-import {
+import type {
     DiffViewState,
     FileStatusResult,
-    mergeSettingsByPriority,
     ObsidianGitSettings,
-    PluginState,
     Status,
     UnstagedFile,
 } from "./types";
+import { mergeSettingsByPriority, PluginState } from "./types";
 import DiffView from "./ui/diff/diffView";
 import HistoryView from "./ui/history/historyView";
 import { BranchModal } from "./ui/modals/branchModal";
@@ -121,7 +122,13 @@ export default class ObsidianGit extends Plugin {
     }
 
     async onload() {
-        console.log("loading " + this.manifest.name + " plugin");
+        console.log(
+            "loading " +
+                this.manifest.name +
+                " plugin: v" +
+                this.manifest.version
+        );
+
         pluginRef.plugin = this;
 
         this.localStorage = new LocalStorageSettings(this);
@@ -153,6 +160,30 @@ export default class ObsidianGit extends Plugin {
             return new DiffView(leaf, this);
         });
 
+        this.addRibbonIcon(
+            "git-pull-request",
+            "Open Git source control",
+            async () => {
+                const leafs = this.app.workspace.getLeavesOfType(
+                    SOURCE_CONTROL_VIEW_CONFIG.type
+                );
+                let leaf: WorkspaceLeaf;
+                if (leafs.length === 0) {
+                    leaf =
+                        this.app.workspace.getRightLeaf(false) ??
+                        this.app.workspace.getLeaf();
+                    await leaf.setViewState({
+                        type: SOURCE_CONTROL_VIEW_CONFIG.type,
+                    });
+                } else {
+                    leaf = leafs.first()!;
+                }
+                this.app.workspace.revealLeaf(leaf);
+
+                dispatchEvent(new CustomEvent("git-refresh"));
+            }
+        );
+
         this.lineAuthoringFeature.onLoadPlugin();
 
         (this.app.workspace as any).registerHoverLinkSource(
@@ -169,7 +200,7 @@ export default class ObsidianGit extends Plugin {
             id: "edit-gitignore",
             name: "Edit .gitignore",
             callback: async () => {
-                const path = this.gitManager.getVaultPath(".gitignore");
+                const path = this.gitManager.getRelativeVaultPath(".gitignore");
                 if (!(await this.app.vault.adapter.exists(path))) {
                     this.app.vault.adapter.write(path, "");
                 }
@@ -191,7 +222,9 @@ export default class ObsidianGit extends Plugin {
                 );
                 let leaf: WorkspaceLeaf;
                 if (leafs.length === 0) {
-                    leaf = this.app.workspace.getRightLeaf(false);
+                    leaf =
+                        this.app.workspace.getRightLeaf(false) ??
+                        this.app.workspace.getLeaf();
                     await leaf.setViewState({
                         type: SOURCE_CONTROL_VIEW_CONFIG.type,
                     });
@@ -212,7 +245,9 @@ export default class ObsidianGit extends Plugin {
                 );
                 let leaf: WorkspaceLeaf;
                 if (leafs.length === 0) {
-                    leaf = this.app.workspace.getRightLeaf(false);
+                    leaf =
+                        this.app.workspace.getRightLeaf(false) ??
+                        this.app.workspace.getLeaf();
                     await leaf.setViewState({
                         type: HISTORY_VIEW_CONFIG.type,
                     });
@@ -238,7 +273,7 @@ export default class ObsidianGit extends Plugin {
                         active: true,
                         state: {
                             staged: false,
-                            file: this.gitManager.asRepositoryRelativePath(
+                            file: this.gitManager.getRelativeRepoPath(
                                 file!.path,
                                 true
                             ),
@@ -289,22 +324,11 @@ export default class ObsidianGit extends Plugin {
             id: "add-to-gitignore",
             name: "Add file to gitignore",
             checkCallback: (checking) => {
-                const file = app.workspace.getActiveFile();
+                const file = this.app.workspace.getActiveFile();
                 if (checking) {
                     return file !== null;
                 } else {
-                    app.vault.adapter
-                        .append(
-                            this.gitManager.getVaultPath(".gitignore"),
-                            "\n" +
-                                this.gitManager.asRepositoryRelativePath(
-                                    file!.path,
-                                    true
-                                )
-                        )
-                        .then(() => {
-                            this.refresh();
-                        });
+                    this.addFileToGitignore(file!);
                 }
             },
         });
@@ -367,6 +391,22 @@ export default class ObsidianGit extends Plugin {
                 ),
         });
 
+        if (Platform.isDesktopApp) {
+            this.addCommand({
+                id: "commit-amend-staged-specified-message",
+                name: "Commit Amend",
+                callback: () =>
+                    this.promiseQueue.addTask(() =>
+                        this.commit({
+                            fromAutoBackup: false,
+                            requestCustomMessage: true,
+                            onlyStaged: true,
+                            amend: true,
+                        })
+                    ),
+            });
+        }
+
         this.addCommand({
             id: "commit-staged-specified-message",
             name: "Commit staged with specific message",
@@ -425,6 +465,12 @@ export default class ObsidianGit extends Plugin {
         });
 
         this.addCommand({
+            id: "set-upstream-branch",
+            name: "Set upstream branch",
+            callback: async () => this.setUpstreamBranch(),
+        });
+
+        this.addCommand({
             id: "delete-repo",
             name: "CAUTION: Delete repository",
             callback: async () => {
@@ -475,13 +521,14 @@ export default class ObsidianGit extends Plugin {
                 if (!(await this.isAllInitialized())) return;
 
                 const status = await this.gitManager.status();
+                console.log(status);
                 this.setState(PluginState.idle);
                 if (status.changed.length + status.staged.length > 500) {
                     this.displayError("Too many changes to display");
                     return;
                 }
 
-                new ChangedFilesModal(this, status.changed).open();
+                new ChangedFilesModal(this, status.all).open();
             },
         });
 
@@ -583,7 +630,7 @@ export default class ObsidianGit extends Plugin {
             !this.settings.showedMobileNotice
         ) {
             new Notice(
-                "Obsidian Git is now available on mobile! Please read the plugin's README for more information.",
+                "Git is now available on mobile! Please read the plugin's README for more information.",
                 length
             );
             this.settings.showedMobileNotice = true;
@@ -591,61 +638,89 @@ export default class ObsidianGit extends Plugin {
         }
         if (this.manifest.id === "obsidian-git-isomorphic") {
             new Notice(
-                "Obsidian Git Mobile is now deprecated. Please uninstall it and install Obsidian Git instead.",
+                "Git Mobile is now deprecated. Please uninstall it and install Git instead.",
                 length
             );
         }
     }
 
+    async addFileToGitignore(file: TAbstractFile): Promise<void> {
+        await this.app.vault.adapter.append(
+            this.gitManager.getRelativeVaultPath(".gitignore"),
+            "\n" + this.gitManager.getRelativeRepoPath(file!.path, true)
+        );
+        this.refresh();
+    }
+
     handleFileMenu(menu: Menu, file: TAbstractFile, source: string): void {
-        if (!this.settings.showFileMenu) return;
-        if (source !== "file-explorer-context-menu") {
-            return;
-        }
-        if (!file) {
-            return;
-        }
         if (!this.gitReady) return;
-        menu.addItem((item) => {
-            item.setTitle(`Git: Stage`)
-                .setIcon("plus-circle")
-                .setSection("action")
-                .onClick((_) => {
-                    this.promiseQueue.addTask(async () => {
-                        if (file instanceof TFile) {
-                            await this.gitManager.stage(file.path, true);
-                        } else {
-                            await this.gitManager.stageAll({
-                                dir: this.gitManager.asRepositoryRelativePath(
-                                    file.path,
-                                    true
-                                ),
-                            });
-                        }
-                        this.displayMessage(`Staged ${file.path}`);
+        if (!this.settings.showFileMenu) return;
+        if (!file) return;
+
+        if (
+            this.settings.showFileMenu &&
+            source == "file-explorer-context-menu"
+        ) {
+            menu.addItem((item) => {
+                item.setTitle(`Git: Stage`)
+                    .setIcon("plus-circle")
+                    .setSection("action")
+                    .onClick((_) => {
+                        this.promiseQueue.addTask(async () => {
+                            if (file instanceof TFile) {
+                                await this.gitManager.stage(file.path, true);
+                            } else {
+                                await this.gitManager.stageAll({
+                                    dir: this.gitManager.getRelativeRepoPath(
+                                        file.path,
+                                        true
+                                    ),
+                                });
+                            }
+                            this.displayMessage(`Staged ${file.path}`);
+                        });
                     });
-                });
-        });
-        menu.addItem((item) => {
-            item.setTitle(`Git: Unstage`)
-                .setIcon("minus-circle")
-                .setSection("action")
-                .onClick((_) => {
-                    this.promiseQueue.addTask(async () => {
-                        if (file instanceof TFile) {
-                            await this.gitManager.unstage(file.path, true);
-                        } else {
-                            await this.gitManager.unstageAll({
-                                dir: this.gitManager.asRepositoryRelativePath(
-                                    file.path,
-                                    true
-                                ),
-                            });
-                        }
-                        this.displayMessage(`Unstaged ${file.path}`);
+            });
+            menu.addItem((item) => {
+                item.setTitle(`Git: Unstage`)
+                    .setIcon("minus-circle")
+                    .setSection("action")
+                    .onClick((_) => {
+                        this.promiseQueue.addTask(async () => {
+                            if (file instanceof TFile) {
+                                await this.gitManager.unstage(file.path, true);
+                            } else {
+                                await this.gitManager.unstageAll({
+                                    dir: this.gitManager.getRelativeRepoPath(
+                                        file.path,
+                                        true
+                                    ),
+                                });
+                            }
+                            this.displayMessage(`Unstaged ${file.path}`);
+                        });
                     });
-                });
-        });
+            });
+            menu.addItem((item) => {
+                item.setTitle(`Git: Add to .gitignore`)
+                    .setIcon("file-x")
+                    .setSection("action")
+                    .onClick((_) => {
+                        this.addFileToGitignore(file);
+                    });
+            });
+        }
+
+        if (source == "git-source-control") {
+            menu.addItem((item) => {
+                item.setTitle(`Git: Add to .gitignore`)
+                    .setIcon("file-x")
+                    .setSection("action")
+                    .onClick((_) => {
+                        this.addFileToGitignore(file);
+                    });
+            });
+        }
     }
 
     async migrateSettings(): Promise<void> {
@@ -929,6 +1004,9 @@ export default class ObsidianGit extends Plugin {
 
         const filesUpdated = await this.pull();
         this.setUpAutoBackup();
+        if (filesUpdated === false) {
+            return;
+        }
         if (!filesUpdated) {
             this.displayMessage("Everything is up-to-date");
         }
@@ -969,12 +1047,16 @@ export default class ObsidianGit extends Plugin {
                 requestCustomMessage,
                 commitMessage,
             }))
-        )
+        ) {
             return;
+        }
 
         if (!this.settings.disablePush) {
             // Prevent plugin to pull/push at every call of createBackup. Only if unpushed commits are present
-            if (await this.gitManager.canPush()) {
+            if (
+                (await this.remotesAreSet()) &&
+                (await this.gitManager.canPush())
+            ) {
                 if (
                     this.settings.syncMethod != "reset" &&
                     this.settings.pullBeforePush
@@ -996,15 +1078,17 @@ export default class ObsidianGit extends Plugin {
         requestCustomMessage = false,
         onlyStaged = false,
         commitMessage,
+        amend = false,
     }: {
         fromAutoBackup: boolean;
         requestCustomMessage?: boolean;
         onlyStaged?: boolean;
         commitMessage?: string;
+        amend?: boolean;
     }): Promise<boolean> {
         if (!(await this.isAllInitialized())) return false;
 
-        let hadConflict = this.localStorage.getConflict() === "true";
+        let hadConflict = this.localStorage.getConflict();
 
         let changedFiles: { vault_path: string }[];
         let status: Status | undefined;
@@ -1016,7 +1100,7 @@ export default class ObsidianGit extends Plugin {
 
             //Should not be necessary, but just in case
             if (status.conflicted.length == 0) {
-                this.localStorage.setConflict("false");
+                this.localStorage.setConflict(false);
                 hadConflict = false;
             }
 
@@ -1053,7 +1137,7 @@ export default class ObsidianGit extends Plugin {
                     this.gitManager as IsomorphicGit
                 ).getUnstagedFiles();
                 changedFiles = unstagedFiles.map(({ filepath }) => ({
-                    vault_path: this.gitManager.getVaultPath(filepath),
+                    vault_path: this.gitManager.getRelativeVaultPath(filepath),
                 }));
             }
         }
@@ -1094,19 +1178,23 @@ export default class ObsidianGit extends Plugin {
             }
             let committedFiles: number | undefined;
             if (onlyStaged) {
-                committedFiles = await this.gitManager.commit(cmtMessage);
+                committedFiles = await this.gitManager.commit({
+                    message: cmtMessage,
+                    amend,
+                });
             } else {
                 committedFiles = await this.gitManager.commitAll({
                     message: cmtMessage,
                     status,
                     unstagedFiles,
+                    amend,
                 });
             }
 
             //Handle resolved conflict after commit
             if (this.gitManager instanceof SimpleGit) {
                 if ((await this.updateCachedStatus()).conflicted.length == 0) {
-                    this.localStorage.setConflict("false");
+                    this.localStorage.setConflict(false);
                 }
             }
 
@@ -1169,7 +1257,7 @@ export default class ObsidianGit extends Plugin {
         if (!(await this.remotesAreSet())) {
             return false;
         }
-        const hadConflict = this.localStorage.getConflict() === "true";
+        const hadConflict = this.localStorage.getConflict();
         if (this.gitManager instanceof SimpleGit)
             await this.mayDeleteConflictFile();
 
@@ -1191,9 +1279,10 @@ export default class ObsidianGit extends Plugin {
             this.setState(PluginState.conflicted);
             return false;
         }
-        {
-            console.log("Pushing....");
-            const pushedFiles = await this.gitManager.push();
+        console.log("Pushing....");
+        const pushedFiles = await this.gitManager.push();
+
+        if (pushedFiles !== undefined) {
             console.log("Pushed!", pushedFiles);
             if (pushedFiles > 0) {
                 this.displayMessage(
@@ -1204,17 +1293,19 @@ export default class ObsidianGit extends Plugin {
             } else {
                 this.displayMessage(`No changes to push`);
             }
-            this.offlineMode = false;
-            this.setState(PluginState.idle);
-            dispatchEvent(new CustomEvent("git-refresh"));
-
-            return true;
         }
+        this.offlineMode = false;
+        this.setState(PluginState.idle);
+        dispatchEvent(new CustomEvent("git-refresh"));
+
+        return true;
     }
 
-    /// Used for internals
-    /// Returns whether the pull added a commit or not.
-    async pull(): Promise<boolean> {
+    /** Used for internals
+    Returns whether the pull added a commit or not.
+
+    See {@link pullChangesFromRemote} for the command version. */
+    async pull(): Promise<false | number> {
         if (!(await this.remotesAreSet())) {
             return false;
         }
@@ -1229,7 +1320,7 @@ export default class ObsidianGit extends Plugin {
             );
             this.lastPulledFiles = pulledFiles;
         }
-        return pulledFiles.length != 0;
+        return pulledFiles.length;
     }
 
     async fetch(): Promise<void> {
@@ -1362,21 +1453,36 @@ export default class ObsidianGit extends Plugin {
         }
     }
 
+    // Ensures that the upstream branch is set.
+    // If not, it will prompt the user to set it.
+    //
+    // An exception is when the user has submodules enabled.
+    // In this case, the upstream branch is not required,
+    // to allow pulling/pushing only the submodules and not the outer repo.
     async remotesAreSet(): Promise<boolean> {
+        if (this.settings.updateSubmodules) {
+            return true;
+        }
         if (!(await this.gitManager.branchInfo()).tracking) {
             new Notice("No upstream branch is set. Please select one.");
-            const remoteBranch = await this.selectRemoteBranch();
-
-            if (remoteBranch == undefined) {
-                this.displayError("Aborted. No upstream-branch is set!", 10000);
-                this.setState(PluginState.idle);
-                return false;
-            } else {
-                await this.gitManager.updateUpstreamBranch(remoteBranch);
-                return true;
-            }
+            return await this.setUpstreamBranch();
         }
         return true;
+    }
+
+    async setUpstreamBranch(): Promise<boolean> {
+        const remoteBranch = await this.selectRemoteBranch();
+
+        if (remoteBranch == undefined) {
+            this.displayError("Aborted. No upstream-branch is set!", 10000);
+            this.setState(PluginState.idle);
+            return false;
+        } else {
+            await this.gitManager.updateUpstreamBranch(remoteBranch);
+            this.displayMessage(`Set upstream branch to ${remoteBranch}`);
+            this.setState(PluginState.idle);
+            return true;
+        }
     }
 
     async setUpAutoBackup() {
@@ -1550,12 +1656,12 @@ export default class ObsidianGit extends Plugin {
     async handleConflict(conflicted?: string[]): Promise<void> {
         this.setState(PluginState.conflicted);
 
-        this.localStorage.setConflict("true");
+        this.localStorage.setConflict(true);
         let lines: string[] | undefined;
         if (conflicted !== undefined) {
             lines = [
                 "# Conflicts",
-                "Please resolve them and commit them using the commands `Obsidian Git: Commit all changes` followed by `Obsidian Git: Push`",
+                "Please resolve them and commit them using the commands `Git: Commit all changes` followed by `Git: Push`",
                 "(This file will automatically be deleted before commit)",
                 "[[#Additional Instructions]] available below file list",
                 "",
@@ -1601,6 +1707,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
         if (remoteName) {
             const oldUrl = await this.gitManager.getRemoteUrl(remoteName);
+
             const urlModal = new GeneralModal({ initialValue: oldUrl });
             // urlModal.inputEl.setText(oldUrl ?? "");
             const remoteURL = await urlModal.open();
@@ -1631,9 +1738,8 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         if (remoteName) {
             this.displayMessage("Fetching remote branches");
             await this.gitManager.fetch(remoteName);
-            const branches = await this.gitManager.getRemoteBranches(
-                remoteName
-            );
+            const branches =
+                await this.gitManager.getRemoteBranches(remoteName);
             const branchModal = new GeneralModal({
                 options: branches,
                 placeholder:
@@ -1728,11 +1834,17 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         this.statusBar?.displayMessage(message.toLowerCase(), timeout);
 
         if (!this.settings.disablePopups) {
-            new Notice(message, 5 * 1000);
+            if (
+                !this.settings.disablePopupsForNoChanges ||
+                !message.startsWith("No changes")
+            ) {
+                new Notice(message, 5 * 1000);
+            }
         }
 
-        console.log(`git obsidian message: ${message}`);
+        this.log(message);
     }
+
     displayError(message: any, timeout: number = 10 * 1000): void {
         if (message instanceof Errors.UserCanceledError) {
             new Notice("Aborted");
@@ -1743,5 +1855,9 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         new Notice(message, timeout);
         console.log(`git obsidian error: ${message}`);
         this.statusBar?.displayMessage(message.toLowerCase(), timeout);
+    }
+
+    log(message: string) {
+        console.log(`${this.manifest.id}: ` + message);
     }
 }

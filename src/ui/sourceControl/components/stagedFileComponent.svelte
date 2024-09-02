@@ -2,10 +2,10 @@
     import { setIcon, TFile } from "obsidian";
     import { hoverPreview } from "obsidian-community-lib";
     import { DIFF_VIEW_CONFIG } from "src/constants";
-    import { GitManager } from "src/gitManager/gitManager";
-    import { FileStatusResult } from "src/types";
-    import { getDisplayPath, getNewLeaf } from "src/utils";
-    import GitView from "../sourceControl";
+    import type { GitManager } from "src/gitManager/gitManager";
+    import type { FileStatusResult } from "src/types";
+    import { getDisplayPath, getNewLeaf, mayTriggerFileMenu } from "src/utils";
+    import type GitView from "../sourceControl";
 
     export let change: FileStatusResult;
     export let view: GitView;
@@ -14,13 +14,13 @@
     $: side = (view.leaf.getRoot() as any).side == "left" ? "right" : "left";
 
     window.setTimeout(
-        () => buttons.forEach((b) => setIcon(b, b.getAttr("data-icon")!, 16)),
+        () => buttons.forEach((b) => setIcon(b, b.getAttr("data-icon")!)),
         0
     );
 
     function hover(event: MouseEvent) {
         //Don't show previews of config- or hidden files.
-        if (app.vault.getAbstractFileByPath(change.vault_path)) {
+        if (view.app.vault.getFileByPath(change.vault_path)) {
             hoverPreview(event, view as any, change.vault_path);
         }
     }
@@ -50,11 +50,24 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <main
     on:mouseover={hover}
     on:focus
     on:click|stopPropagation={showDiff}
-    on:auxclick|stopPropagation={showDiff}
+    on:auxclick|stopPropagation={(event) => {
+        if (event.button == 2)
+            mayTriggerFileMenu(
+                view.app,
+                event,
+                change.vault_path,
+                view.leaf,
+                "git-source-control"
+            );
+        else showDiff(event);
+    }}
     class="tree-item nav-file"
 >
     <div
@@ -64,7 +77,6 @@
             !view.plugin.lastDiffViewState?.hash &&
             view.plugin.lastDiffViewState?.staged}
         data-path={change.vault_path}
-        aria-label-position={side}
         data-tooltip-position={side}
         aria-label={change.vault_path}
     >
@@ -73,7 +85,7 @@
         </div>
         <div class="git-tools">
             <div class="buttons">
-                {#if view.app.vault.getAbstractFileByPath(change.vault_path)}
+                {#if view.app.vault.getAbstractFileByPath(change.vault_path) instanceof TFile}
                     <div
                         data-icon="go-to-file"
                         aria-label="Open File"

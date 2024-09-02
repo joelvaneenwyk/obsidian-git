@@ -1,5 +1,5 @@
 import { setIcon } from "obsidian";
-import ObsidianGit from "./main";
+import type ObsidianGit from "./main";
 import { PluginState } from "./types";
 
 interface StatusBarMessage {
@@ -21,7 +21,6 @@ export class StatusBar {
         private statusBarEl: HTMLElement,
         private readonly plugin: ObsidianGit
     ) {
-        this.statusBarEl.setAttribute("aria-label-position", "top");
         this.statusBarEl.setAttribute("data-tooltip-position", "top");
 
         addEventListener("git-refresh", this.refreshCommitTimestamp.bind(this));

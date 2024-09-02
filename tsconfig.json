@@ -12,13 +12,17 @@
         "strictNullChecks": true,
         "importHelpers": true,
         "allowSyntheticDefaultImports": true,
+        "verbatimModuleSyntax": true,
         "lib": [
             "DOM",
             "ES5",
             "ES6",
             "ES7"
         ],
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "types": [
+            "svelte"
+        ],
     },
     "include": [
         "**/*.ts",

@@ -1,4 +1,4 @@
-import { LineAuthorSettings } from "src/lineAuthor/model";
+import type { LineAuthorSettings } from "src/lineAuthor/model";
 
 export interface ObsidianGitSettings {
     commitMessage: string;
@@ -12,6 +12,7 @@ export interface ObsidianGitSettings {
     disablePush: boolean;
     pullBeforePush: boolean;
     disablePopups: boolean;
+    disablePopupsForNoChanges: boolean;
     listChangedFilesInMessageBody: boolean;
     showStatusBar: boolean;
     updateSubmodules: boolean;
@@ -43,6 +44,8 @@ export interface ObsidianGitSettings {
     setLastSaveToLastCommit: boolean;
     gitDir: string;
     showFileMenu: boolean;
+    authorInHistoryView: ShowAuthorInHistoryView;
+    dateInHistoryView: boolean;
 }
 
 /**
@@ -58,12 +61,15 @@ export function mergeSettingsByPriority(
 
 export type SyncMethod = "rebase" | "merge" | "reset";
 
+export type ShowAuthorInHistoryView = "full" | "initials" | "hide";
+
 export interface Author {
     name: string;
     email: string;
 }
 
 export interface Status {
+    all: FileStatusResult[];
     changed: FileStatusResult[];
     staged: FileStatusResult[];
     conflicted: string[];
@@ -202,6 +208,10 @@ export interface LogEntry {
     refs: string[];
     body: string;
     diff: DiffEntry;
+    author: {
+        name: string;
+        email: string;
+    };
 }
 
 export interface DiffEntry {

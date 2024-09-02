@@ -15,9 +15,16 @@ To clone, you have to use a remote URL. This can be one of two protocols: either
     - Run `git clone <your-remote-url>` in the command line wherever you want your vault to be located.
 4. Read on how to best configure your [[Tips-and-Tricks#Gitignore|.gitignore]]
 
-# Mobile
 
-## Performance and restrictions
+> [!info] iCloud and Git
+> When syncing your vault with iCloud and using Git on your desktop device the whole `.git` directory gets synced to your mobile device as well. This may slow down the Obsidian startup time. 
+> - One solution is to put the git repository above your Obsidian vault. So that your vault is a sub directory of your git repository.
+> - Another solution is to move the `.git` directory to another location and create a `.git` file in your vault with only the following line: `gitdir: <path-to-your-actual-git-direcotry>`
+
+# Mobile
+The git implementation on mobile is **very unstable**!
+
+## Restrictions
 
 I am using [isomorphic-git](https://isomorphic-git.org/), which is a re-implementation of Git in JavaScript, because you cannot use native Git on Android or iOS.
 
@@ -26,10 +33,15 @@ I am using [isomorphic-git](https://isomorphic-git.org/), which is a re-implemen
 -   Rebase merge strategy is not supported
 -   Submodules are not supported
 
-### Performance on mobile
+## Performance on mobile
 
-> [!Warning]
-> Depending on your device and available free RAM, Obsidian may crash on clone/pull. I don't know how to fix this. If that's the case for you, I have to admit this plugin won't work for you. So commenting on any issue or creating a new one won't help. I am sorry.
+> [!danger] Warning
+> Depending on your device and available free RAM, Obsidian may
+> - crash on clone/pull
+> - create buffer overflow errors
+> - run indefinitely.
+>   
+> It's caused by the underlying git implementation on mobile, which is not efficient. I don't know how to fix this. If that's the case for you, I have to admit this plugin won't work for you. So commenting on any issue or creating a new one won't help. I am sorry.
 
 ## Start with existing remote repository
 
@@ -46,14 +58,14 @@ The instructions assume you are using [GitHub](https://github.com), but can be e
     - Minimal permissions required are
         - "Read access to metadata"
         - "Read and Write access to contents and commit status"
-5. In Obsidian settings, enable community plugins. Browse plugins to install Obsidian Git.
-6. Enable Obsidian Git (on the same screen)
-7. Go to Options for the Obsidian Git plugin (bottom of main settings page, under Community Plugins section)
+5. In Obsidian settings, enable community plugins. Browse plugins to install Git.
+6. Enable Git (on the same screen)
+7. Go to Options for the Git plugin (bottom of main settings page, under Community Plugins section)
 8. Under the "Authentication/Commit Author" section, fill in the username on your git server and your password/personal access token.
 9. Don't touch any settings under "Advanced"
-10. Exit plugin settings, open command palette, choose "Obsidian Git: Clone existing remote repo".
+10. Exit plugin settings, open command palette, choose "Git: Clone existing remote repo".
 11. Fill in repo URL in the text field and press the repo URL button below it. The repo URL is NOT the URL in the browser. You have to append `.git`. - `https://github.com/<username>/<repo>.git
-	- E.g. `https://github.com/denolehov/obsidian-git.git`
+    - E.g. `https://github.com/denolehov/obsidian-git.git`
 12. Follow instructions to determine the folder to place repo in and whether an `.obsidian` directory already exits.
 13. Clone should start. Popup notifications (if not disabled) will display the progress. Do not exit until a popup appears requesting that you "Restart Obsidian".
 
@@ -74,11 +86,10 @@ Depending on the size of your repository and your device, Obsidian may crash dur
 8. Copy the repo from Working Copy. Delete the vault from Obsidian and paste the repo there (repo has the same name as the vault).
 9. Open Obsidian.
 10. All your cloned files should be visible.
-11. Install and enable the Obsidian Git plugin.
+11. Install and enable the Git plugin.
 12. Add your name/email to the "Authentication/Commit Author" section in the plugin settings.
 13. Use the command palette to call the "Pull" command.
 
 ## Start with new repo
 
 Similar steps as [existing repo](#existing-repo), except use the `Initialize a new repo` command, followed by `Edit remotes` to add the remote repo to track. This remote repo will need to exist and be empty. Also make sure to read on how to best configure your [[Tips-and-Tricks#Gitignore|.gitignore]].
-

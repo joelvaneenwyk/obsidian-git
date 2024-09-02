@@ -1,5 +1,6 @@
-import { DataAdapter, normalizePath, TFile, Vault } from "obsidian";
-import ObsidianGit from "../main";
+import type { DataAdapter, Vault } from "obsidian";
+import { normalizePath, TFile } from "obsidian";
+import type ObsidianGit from "../main";
 
 export class MyAdapter {
     promises: any = {};
@@ -10,7 +11,10 @@ export class MyAdapter {
     indexmtime: number | undefined;
     lastBasePath: string | undefined;
 
-    constructor(vault: Vault, private readonly plugin: ObsidianGit) {
+    constructor(
+        vault: Vault,
+        private readonly plugin: ObsidianGit
+    ) {
         this.adapter = vault.adapter;
         this.vault = vault;
         this.lastBasePath = this.plugin.settings.basePath;
@@ -183,7 +187,9 @@ export class MyAdapter {
     async saveAndClear(): Promise<void> {
         if (this.index !== undefined) {
             await this.adapter.writeBinary(
-                this.plugin.gitManager.getVaultPath(this.gitDir + "/index"),
+                this.plugin.gitManager.getRelativeVaultPath(
+                    this.gitDir + "/index"
+                ),
                 this.index,
                 {
                     ctime: this.indexctime,

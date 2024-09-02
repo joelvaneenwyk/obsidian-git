@@ -1,8 +1,9 @@
 <script lang="ts">
-    import ObsidianGit from "src/main";
-    import { LogEntry } from "src/types";
+    import { moment } from "obsidian";
+    import type ObsidianGit from "src/main";
+    import type { LogEntry } from "src/types";
     import { slide } from "svelte/transition";
-    import HistoryView from "../historyView";
+    import type HistoryView from "../historyView";
     import LogFileComponent from "./logFileComponent.svelte";
     import LogTreeComponent from "./logTreeComponent.svelte";
 
@@ -19,12 +20,29 @@
 
     $: side = (view.leaf.getRoot() as any).side == "left" ? "right" : "left";
     let isCollapsed = true;
+
+    function authorToString(log: LogEntry) {
+        const name = log.author.name;
+        if (plugin.settings.authorInHistoryView == "full") {
+            return name;
+        } else if (plugin.settings.authorInHistoryView == "initials") {
+            const words = name.split(" ").filter((word) => word.length > 0);
+
+            return words.map((word) => word[0].toUpperCase()).join("");
+        }
+    }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <main>
     <div class="tree-item nav-folder" class:is-collapsed={isCollapsed}>
         <div
             class="tree-item-self is-clickable nav-folder-title"
+            aria-label={`${log.refs.length > 0 ? log.refs.join(", ") + "\n" : ""}${log.author?.name}
+${moment(log.date).format(plugin.settings.commitDateFormat)}
+${log.message}`}
+            data-tooltip-position={side}
             on:click={() => (isCollapsed = !isCollapsed)}
         >
             <div
@@ -51,12 +69,20 @@
                         {log.refs.join(", ")}
                     </div>
                 {/if}
-                <div
-                    class="tree-item-inner nav-folder-title-content"
-                    aria-label={log.message}
-                    aria-label-position={side}
-                    data-tooltip-position={side}
-                >
+                {#if plugin.settings.authorInHistoryView != "hide" && log.author?.name}
+                    <div class="git-author">
+                        {authorToString(log)}
+                    </div>
+                {/if}
+                {#if plugin.settings.dateInHistoryView}
+                    <div class="git-date">
+                        {moment(log.date).format(
+                            plugin.settings.commitDateFormat
+                        )}
+                    </div>
+                {/if}
+
+                <div class="tree-item-inner nav-folder-title-content">
                     {log.message}
                 </div>
             </div>
@@ -84,7 +110,4 @@
 </main>
 
 <style lang="scss">
-    .git-ref {
-        color: var(--text-accent);
-    }
 </style>

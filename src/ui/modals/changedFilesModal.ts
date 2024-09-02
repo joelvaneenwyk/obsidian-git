@@ -1,6 +1,6 @@
 import { FuzzySuggestModal } from "obsidian";
-import ObsidianGit from "src/main";
-import { FileStatusResult } from "src/types";
+import type ObsidianGit from "src/main";
+import type { FileStatusResult } from "src/types";
 
 export class ChangedFilesModal extends FuzzySuggestModal<FileStatusResult> {
     plugin: ObsidianGit;
@@ -28,7 +28,7 @@ export class ChangedFilesModal extends FuzzySuggestModal<FileStatusResult> {
         let index = "";
 
         if (item.working_dir != " ")
-            working_dir = `Working dir: ${item.working_dir} `;
+            working_dir = `Working Dir: ${item.working_dir} `;
         if (item.index != " ") index = `Index: ${item.index}`;
 
         return `${working_dir}${index} | ${item.vault_path}`;

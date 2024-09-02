@@ -1,11 +1,11 @@
 <script lang="ts">
     import { setIcon } from "obsidian";
     import { SimpleGit } from "src/gitManager/simpleGit";
-    import ObsidianGit from "src/main";
-    import { LogEntry } from "src/types";
+    import type ObsidianGit from "src/main";
+    import type { LogEntry } from "src/types";
     import { onDestroy } from "svelte";
     import LogComponent from "./components/logComponent.svelte";
-    import HistoryView from "./historyView";
+    import type HistoryView from "./historyView";
 
     export let plugin: ObsidianGit;
     export let view: HistoryView;
@@ -18,7 +18,7 @@
     $: {
         if (layoutBtn) {
             layoutBtn.empty();
-            setIcon(layoutBtn, showTree ? "list" : "folder", 16);
+            setIcon(layoutBtn, showTree ? "list" : "folder");
         }
     }
     addEventListener("git-view-refresh", refresh);
@@ -26,10 +26,8 @@
     //setTimeout's callback will execute after the current event loop finishes.
     plugin.app.workspace.onLayoutReady(() => {
         window.setTimeout(() => {
-            buttons.forEach((btn) =>
-                setIcon(btn, btn.getAttr("data-icon")!, 16)
-            );
-            setIcon(layoutBtn, showTree ? "list" : "folder", 16);
+            buttons.forEach((btn) => setIcon(btn, btn.getAttr("data-icon")!));
+            setIcon(layoutBtn, showTree ? "list" : "folder");
         }, 0);
     });
     onDestroy(() => {
@@ -52,6 +50,8 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <main>
     <div class="nav-header">
         <div class="nav-buttons-container">
@@ -82,11 +82,9 @@
     <div class="nav-files-container" style="position: relative;">
         {#if logs}
             <div class="tree-item nav-folder mod-root">
-                <div class="tree-item-children nav-folder-children">
-                    {#each logs as log}
-                        <LogComponent {view} {showTree} {log} {plugin} />
-                    {/each}
-                </div>
+                {#each logs as log}
+                    <LogComponent {view} {showTree} {log} {plugin} />
+                {/each}
             </div>
         {/if}
     </div>

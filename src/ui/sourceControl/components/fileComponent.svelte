@@ -2,11 +2,11 @@
     import { setIcon, TFile } from "obsidian";
     import { hoverPreview } from "obsidian-community-lib";
     import { DIFF_VIEW_CONFIG } from "src/constants";
-    import { GitManager } from "src/gitManager/gitManager";
-    import { FileStatusResult } from "src/types";
+    import type { GitManager } from "src/gitManager/gitManager";
+    import type { FileStatusResult } from "src/types";
     import { DiscardModal } from "src/ui/modals/discardModal";
-    import { getDisplayPath, getNewLeaf } from "src/utils";
-    import GitView from "../sourceControl";
+    import { getDisplayPath, getNewLeaf, mayTriggerFileMenu } from "src/utils";
+    import type GitView from "../sourceControl";
 
     export let change: FileStatusResult;
     export let view: GitView;
@@ -28,7 +28,6 @@
 
     function open(event: MouseEvent) {
         const file = view.app.vault.getAbstractFileByPath(change.vault_path);
-        console.log(event);
 
         if (file instanceof TFile) {
             getNewLeaf(event)?.openFile(file);
@@ -75,10 +74,24 @@
 </script>
 
 <!-- TODO: Fix arai-label for left sidebar and if it's too long -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-unknown-aria-attribute -->
 <main
     on:mouseover={hover}
     on:click|stopPropagation={showDiff}
-    on:auxclick|stopPropagation={showDiff}
+    on:auxclick|stopPropagation={(event) => {
+        if (event.button == 2)
+            mayTriggerFileMenu(
+                view.app,
+                event,
+                change.vault_path,
+                view.leaf,
+                "git-source-control"
+            );
+        else showDiff(event);
+    }}
     on:focus
     class="tree-item nav-file"
 >
@@ -89,7 +102,6 @@
             !view.plugin.lastDiffViewState?.hash &&
             !view.plugin.lastDiffViewState?.staged}
         data-path={change.vault_path}
-        aria-label-position={side}
         data-tooltip-position={side}
         aria-label={change.vault_path}
     >
@@ -103,7 +115,7 @@
         </div>
         <div class="git-tools">
             <div class="buttons">
-                {#if view.app.vault.getAbstractFileByPath(change.vault_path)}
+                {#if view.app.vault.getAbstractFileByPath(change.vault_path) instanceof TFile}
                     <div
                         data-icon="go-to-file"
                         aria-label="Open File"

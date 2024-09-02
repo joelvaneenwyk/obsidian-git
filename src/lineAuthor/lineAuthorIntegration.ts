@@ -1,24 +1,17 @@
-import { Extension } from "@codemirror/state";
-import {
-    EventRef,
-    Platform,
-    TAbstractFile,
-    TFile,
-    WorkspaceLeaf,
-} from "obsidian";
+import type { Extension } from "@codemirror/state";
+import type { EventRef, TAbstractFile, WorkspaceLeaf } from "obsidian";
+import { Platform, TFile } from "obsidian";
 import { SimpleGit } from "src/gitManager/simpleGit";
 import {
     LineAuthorProvider,
     enabledLineAuthorInfoExtensions,
 } from "src/lineAuthor/lineAuthorProvider";
-import {
-    LineAuthorSettings,
-    provideSettingsAccess,
-} from "src/lineAuthor/model";
+import type { LineAuthorSettings } from "src/lineAuthor/model";
+import { provideSettingsAccess } from "src/lineAuthor/model";
 import { handleContextMenu } from "src/lineAuthor/view/contextMenu";
 import { setTextColorCssBasedOnSetting } from "src/lineAuthor/view/gutter/coloring";
 import { prepareGutterSearchForContextMenuHandling } from "src/lineAuthor/view/gutter/gutterElementSearch";
-import ObsidianGit from "src/main";
+import type ObsidianGit from "src/main";
 
 /**
  * Manages the interaction between Obsidian (file-open event, modification event, etc.)
@@ -58,7 +51,7 @@ export class LineAuthoringFeature {
 
     public activateFeature() {
         try {
-            if (!this.isAvailableOnCurrentPlatform()) return;
+            if (!this.isAvailableOnCurrentPlatform().available) return;
 
             setTextColorCssBasedOnSetting(this.plg.settings.lineAuthor);
 
@@ -70,10 +63,7 @@ export class LineAuthoringFeature {
 
             console.log(this.plg.manifest.name + ": Enabled line authoring.");
         } catch (e) {
-            console.warn(
-                "Obsidian Git: Error while loading line authoring feature.",
-                e
-            );
+            console.warn("Git: Error while loading line authoring feature.", e);
             this.deactivateFeature();
         }
     }
@@ -171,7 +161,7 @@ export class LineAuthoringFeature {
 
         if (!this.lineAuthorInfoProvider) {
             console.warn(
-                "Obsidian Git: undefined lineAuthorInfoProvider. Unexpected situation."
+                "Git: undefined lineAuthorInfoProvider. Unexpected situation."
             );
             return;
         }
