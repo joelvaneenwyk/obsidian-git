@@ -19,10 +19,10 @@ export function getNewLeaf(event?: MouseEvent): WorkspaceLeaf | undefined {
     if (event) {
         if (event.button === 0 || event.button === 1) {
             const type = Keymap.isModEvent(event);
-            leaf = app.workspace.getLeaf(type);
+            leaf = this.app.workspace.getLeaf(type);
         }
     } else {
-        leaf = app.workspace.getLeaf(false);
+        leaf = this.app.workspace.getLeaf(false);
     }
     return leaf;
 }

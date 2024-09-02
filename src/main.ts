@@ -478,7 +478,7 @@ export default class ObsidianGit extends Plugin {
                     `${this.settings.basePath}/.git`
                 );
                 if (repoExists) {
-                    const modal = new GeneralModal({
+                    const modal = new GeneralModal(this.app, {
                         options: ["NO", "YES"],
                         placeholder:
                             "Do you really want to delete the repository (.git directory)? This action cannot be undone.",
@@ -561,7 +561,7 @@ export default class ObsidianGit extends Plugin {
             name: "CAUTION: Discard all changes",
             callback: async () => {
                 if (!(await this.isAllInitialized())) return false;
-                const modal = new GeneralModal({
+                const modal = new GeneralModal(this.app, {
                     options: ["NO", "YES"],
                     placeholder:
                         "Do you want to discard all changes to tracked files? This action cannot be undone.",
@@ -896,11 +896,13 @@ export default class ObsidianGit extends Plugin {
     }
 
     async cloneNewRepo() {
-        const modal = new GeneralModal({ placeholder: "Enter remote URL" });
+        const modal = new GeneralModal(this.app, {
+            placeholder: "Enter remote URL",
+        });
         const url = await modal.open();
         if (url) {
             const confirmOption = "Vault Root";
-            let dir = await new GeneralModal({
+            let dir = await new GeneralModal(this.app, {
                 options:
                     this.gitManager instanceof IsomorphicGit
                         ? [confirmOption]
@@ -920,9 +922,9 @@ export default class ObsidianGit extends Plugin {
                 }
 
                 if (dir === ".") {
-                    const modal = new GeneralModal({
+                    const modal = new GeneralModal(this.app, {
                         options: ["NO", "YES"],
-                        placeholder: `Does your remote repo contain a ${app.vault.configDir} directory at the root?`,
+                        placeholder: `Does your remote repo contain a ${this.app.vault.configDir} directory at the root?`,
                         onlySelection: true,
                     });
                     const containsConflictDir = await modal.open();
@@ -932,16 +934,16 @@ export default class ObsidianGit extends Plugin {
                     } else if (containsConflictDir === "YES") {
                         const confirmOption =
                             "DELETE ALL YOUR LOCAL CONFIG AND PLUGINS";
-                        const modal = new GeneralModal({
+                        const modal = new GeneralModal(this.app, {
                             options: ["Abort clone", confirmOption],
-                            placeholder: `To avoid conflicts, the local ${app.vault.configDir} directory needs to be deleted.`,
+                            placeholder: `To avoid conflicts, the local ${this.app.vault.configDir} directory needs to be deleted.`,
                             onlySelection: true,
                         });
                         const shouldDelete =
                             (await modal.open()) === confirmOption;
                         if (shouldDelete) {
                             await this.app.vault.adapter.rmdir(
-                                app.vault.configDir,
+                                this.app.vault.configDir,
                                 true
                             );
                         } else {
@@ -950,7 +952,7 @@ export default class ObsidianGit extends Plugin {
                         }
                     }
                 }
-                const depth = await new GeneralModal({
+                const depth = await new GeneralModal(this.app, {
                     placeholder:
                         "Specify depth of clone. Leave empty for full clone.",
                     allowEmpty: true,
@@ -1380,6 +1382,7 @@ export default class ObsidianGit extends Plugin {
 
         const branchInfo = await this.gitManager.branchInfo();
         const selectedBranch = await new BranchModal(
+            this.app,
             branchInfo.branches
         ).open();
 
@@ -1409,7 +1412,7 @@ export default class ObsidianGit extends Plugin {
     async createBranch(): Promise<string | undefined> {
         if (!(await this.isAllInitialized())) return;
 
-        const newBranch = await new GeneralModal({
+        const newBranch = await new GeneralModal(this.app, {
             placeholder: "Create new branch",
         }).open();
         if (newBranch != undefined) {
@@ -1425,7 +1428,7 @@ export default class ObsidianGit extends Plugin {
 
         const branchInfo = await this.gitManager.branchInfo();
         if (branchInfo.current) branchInfo.branches.remove(branchInfo.current);
-        const branch = await new GeneralModal({
+        const branch = await new GeneralModal(this.app, {
             options: branchInfo.branches,
             placeholder: "Delete branch",
             onlySelection: true,
@@ -1435,7 +1438,7 @@ export default class ObsidianGit extends Plugin {
             const merged = await this.gitManager.branchIsMerged(branch);
             // Using await inside IF throws exception
             if (!merged) {
-                const forceAnswer = await new GeneralModal({
+                const forceAnswer = await new GeneralModal(this.app, {
                     options: ["YES", "NO"],
                     placeholder:
                         "This branch isn't merged into HEAD. Force delete?",
@@ -1698,7 +1701,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
         const remotes = await this.gitManager.getRemotes();
 
-        const nameModal = new GeneralModal({
+        const nameModal = new GeneralModal(this.app, {
             options: remotes,
             placeholder:
                 "Select or create a new remote by typing its name and selecting it",
@@ -1708,7 +1711,9 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         if (remoteName) {
             const oldUrl = await this.gitManager.getRemoteUrl(remoteName);
 
-            const urlModal = new GeneralModal({ initialValue: oldUrl });
+            const urlModal = new GeneralModal(this.app, {
+                initialValue: oldUrl,
+            });
             // urlModal.inputEl.setText(oldUrl ?? "");
             const remoteURL = await urlModal.open();
             if (remoteURL) {
@@ -1728,7 +1733,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
             }
         }
 
-        const nameModal = new GeneralModal({
+        const nameModal = new GeneralModal(this.app, {
             options: remotes,
             placeholder:
                 "Select or create a new remote by typing its name and selecting it",
@@ -1740,7 +1745,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
             await this.gitManager.fetch(remoteName);
             const branches =
                 await this.gitManager.getRemoteBranches(remoteName);
-            const branchModal = new GeneralModal({
+            const branchModal = new GeneralModal(this.app, {
                 options: branches,
                 placeholder:
                     "Select or create a new remote branch by typing its name and selecting it",
@@ -1754,7 +1759,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
         const remotes = await this.gitManager.getRemotes();
 
-        const nameModal = new GeneralModal({
+        const nameModal = new GeneralModal(this.app, {
             options: remotes,
             placeholder: "Select a remote",
         });

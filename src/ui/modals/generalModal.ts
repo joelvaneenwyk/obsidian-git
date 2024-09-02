@@ -1,4 +1,4 @@
-import { SuggestModal } from "obsidian";
+import { App, SuggestModal } from "obsidian";
 
 export interface OptionalGeneralModalConfig {
     options?: string[];
@@ -29,7 +29,7 @@ export class GeneralModal extends SuggestModal<string> {
     ) => void;
     config: GeneralModalConfig;
 
-    constructor(config: OptionalGeneralModalConfig) {
+    constructor(app: App, config: OptionalGeneralModalConfig) {
         super(app);
         this.config = { ...generalModalConfigDefaults, ...config };
         this.setPlaceholder(this.config.placeholder);
