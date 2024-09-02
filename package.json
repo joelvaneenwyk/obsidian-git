@@ -3,6 +3,7 @@
     "version": "2.26.0",
     "description": "Integrate Git version control with automatic backup and other advanced features in Obsidian.md",
     "main": "main.js",
+    "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1",
     "scripts": {
         "dev": "node esbuild.config.mjs dev",
         "build": "node esbuild.config.mjs production",
@@ -58,8 +59,8 @@
         "diff2html": "^3.4.48",
         "isomorphic-git": "^1.27.1",
         "js-sha256": "^0.9.0",
-        "obsidian-community-lib": "github:Vinzent03/obsidian-community-lib#upgrade",
-        "simple-git": "github:Vinzent03/git-js#release",
+        "obsidian-community-lib": "github:joelvaneenwyk/obsidian-community-lib#upgrade",
+        "simple-git": "github:joelvaneenwyk/obsidian-git-js#release",
         "supports-color": "^9.4.0"
     },
     "moduleFileExtensions": [
