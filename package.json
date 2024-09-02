@@ -23,7 +23,7 @@
     "devDependencies": {
         "@codemirror/state": "^6.2.1",
         "@codemirror/view": "^6.17.0",
-        "@types/debug": "^4.1.8",
+        "@types/debug": "^4.1.12",
         "@types/deep-equal": "^1.0.1",
         "@types/diff": "^5.0.3",
         "@types/hogan.js": "^3.0.1",
@@ -48,7 +48,7 @@
     "dependencies": {
         "buffer": "^6.0.3",
         "css-color-converter": "^2.0.0",
-        "debug": "^4.3.4",
+        "debug": "^4.3.6",
         "deep-equal": "^2.2.2",
         "diff": "^5.1.0",
         "diff2html": "^3.4.41",
