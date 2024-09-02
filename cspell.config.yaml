@@ -1,0 +1,11 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions:
+  - name: obsidian-git
+    path: ./.cspell/obsidian-git.dict
+    addWords: true
+dictionaries:
+  - obsidian-git
+words: []
+ignoreWords: []
+import: []
