@@ -11,7 +11,7 @@
 
     function hover(event: MouseEvent) {
         //Don't show previews of config- or hidden files.
-        if (app.vault.getAbstractFileByPath(change.vault_path)) {
+        if (this.app.vault.getAbstractFileByPath(change.vault_path)) {
             hoverPreview(event, view as any, change.vault_path);
         }
     }
