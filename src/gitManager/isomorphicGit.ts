@@ -1203,7 +1203,6 @@ function getIterator(iterable: any) {
 
 async function forAwait(iterable: any, cb: any) {
     const iter = getIterator(iterable);
-    //eslint-disable-next-line no-constant-condition
     while (true) {
         const { value, done } = await iter.next();
         if (value) await cb(value);

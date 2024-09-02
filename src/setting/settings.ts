@@ -118,10 +118,11 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                                 } else if (
                                     plugin.settings.autoSaveInterval <= 0
                                 ) {
-                                    plugin.clearAutoBackup() &&
+                                    if (plugin.clearAutoBackup()) {
                                         new Notice(
                                             `Automatic ${commitOrBackup} disabled!`
                                         );
+                                    }
                                 }
                             } else {
                                 new Notice("Please specify a valid number.");
@@ -202,10 +203,11 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                                     } else if (
                                         plugin.settings.autoPushInterval <= 0
                                     ) {
-                                        plugin.clearAutoPush() &&
+                                        if (plugin.clearAutoPush()) {
                                             new Notice(
                                                 "Automatic push disabled!"
                                             );
+                                        }
                                     }
                                 } else {
                                     new Notice(
@@ -243,8 +245,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                                 } else if (
                                     plugin.settings.autoPullInterval <= 0
                                 ) {
-                                    plugin.clearAutoPull() &&
+                                    if (plugin.clearAutoPull()) {
                                         new Notice("Automatic pull disabled!");
+                                    }
                                 }
                             } else {
                                 new Notice("Please specify a valid number.");
@@ -1058,7 +1061,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     });
                 }).descEl.innerHTML = `
                     The CSS color of the gutter text.<br/>
-                    
+
                     It is higly recommended to use
                     <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">
                     CSS variables</a>

@@ -966,8 +966,9 @@ function parseLineInfoInto(lineInfo: string[], line: number, result: Blame) {
     result.hashPerLine.push(hash);
     result.originalFileLineNrPerLine.push(parseInt(lineInfo[1]));
     result.finalFileLineNrPerLine.push(parseInt(lineInfo[2]));
-    lineInfo.length >= 4 &&
+    if (lineInfo.length >= 4) {
         result.groupSizePerStartingLine.set(line, parseInt(lineInfo[3]));
+    }
 
     if (parseInt(lineInfo[2]) !== line) {
         throw Error(
