@@ -34,10 +34,10 @@ importers:
         version: 0.9.0
       obsidian-community-lib:
         specifier: github:joelvaneenwyk/obsidian-community-lib#upgrade
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.28.4)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.28.4)
       simple-git:
         specifier: github:joelvaneenwyk/obsidian-git-js#release
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
       supports-color:
         specifier: ^9.4.0
         version: 9.4.0
@@ -74,13 +74,13 @@ importers:
         version: 0.23.0
       esbuild-svelte:
         specifier: ^0.8.1
-        version: 0.8.1(esbuild@0.23.0)(svelte@4.2.18)
+        version: 0.8.1(esbuild@0.23.0)(svelte@4.2.19)
       eslint:
         specifier: ^8.57.0
         version: 8.57.0(supports-color@9.4.0)
       eslint-plugin-svelte:
         specifier: ^2.41.0
-        version: 2.41.0(eslint@8.57.0(supports-color@9.4.0))(svelte@4.2.18)
+        version: 2.41.0(eslint@8.57.0(supports-color@9.4.0))(svelte@4.2.19)
       obsidian:
         specifier: ^1.5.7
         version: 1.5.7(@codemirror/state@6.4.1)(@codemirror/view@6.28.4)
@@ -89,7 +89,7 @@ importers:
         version: 3.3.2
       prettier-plugin-svelte:
         specifier: ^3.2.5
-        version: 3.2.5(prettier@3.3.2)(svelte@4.2.18)
+        version: 3.2.5(prettier@3.3.2)(svelte@4.2.19)
       sass:
         specifier: ^1.77.6
         version: 1.77.6
@@ -100,14 +100,14 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       svelte:
-        specifier: ^4.2.18
-        version: 4.2.18
+        specifier: ^4.2.19
+        version: 4.2.19
       svelte-check:
         specifier: ^3.8.4
-        version: 3.8.4(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18)
+        version: 3.8.4(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19)
       svelte-preprocess:
         specifier: ^6.0.1
-        version: 6.0.1(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18)(typescript@5.5.3)
+        version: 6.0.1(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19)(typescript@5.5.3)
       tslib:
         specifier: ^2.6.3
         version: 2.6.3
@@ -1442,8 +1442,8 @@ packages:
     resolution: {integrity: sha512-byy+U7gp+FVwmyzKPYhW2h5l3crpmGsxl7X2s8y43IgxvG4g3QZ6CffDtsNQy1WsmZpQbO+ybo0AlW7TY6DcBQ==}
     engines: {node: '>= 0.4'}
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24}
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24:
+    resolution: {commit: e663de4f95c879b40613090da78ea599ff621d24, repo: git@github.com:joelvaneenwyk/obsidian-community-lib.git, type: git}
     version: 2.0.1
 
   obsidian@1.5.7:
@@ -1595,8 +1595,8 @@ packages:
     resolution: {integrity: sha512-UMz42UD0UY0EApS0ZL9o1XnLhSTtvvvLe5Dc2H2O56fvRZi+KulDyf5ctDhhtYJBGKStV2FL1fy6253cmLgqVQ==}
     engines: {node: '>=4'}
 
-  postcss@8.4.39:
-    resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
+  postcss@8.4.43:
+    resolution: {integrity: sha512-gJAQVYbh5R3gYm33FijzCZj7CHyQ3hWMgJMprLUlIYqCwTeZhBQ19wp0e9mA25BUbEvY5+EXuuaAjqQsrBxQBQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -1765,8 +1765,8 @@ packages:
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a}
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
+    resolution: {commit: 6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a, repo: git@github.com:joelvaneenwyk/obsidian-git-js.git, type: git}
     version: 3.16.1
 
   slash@3.0.0:
@@ -1950,8 +1950,8 @@ packages:
       typescript:
         optional: true
 
-  svelte@4.2.18:
-    resolution: {integrity: sha512-d0FdzYIiAePqRJEb90WlJDkjUEx42xhivxN8muUBmfZnP+tzUgz12DJ2hRJi8sIHCME7jeK1PTMgKPSfTd8JrA==}
+  svelte@4.2.19:
+    resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
     engines: {node: '>=16'}
 
   text-extensions@1.9.0:
@@ -2818,11 +2818,11 @@ snapshots:
 
   es6-promise@3.3.1: {}
 
-  esbuild-svelte@0.8.1(esbuild@0.23.0)(svelte@4.2.18):
+  esbuild-svelte@0.8.1(esbuild@0.23.0)(svelte@4.2.19):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       esbuild: 0.23.0
-      svelte: 4.2.18
+      svelte: 4.2.19
 
   esbuild@0.23.0:
     optionalDependencies:
@@ -2862,7 +2862,7 @@ snapshots:
       eslint: 8.57.0(supports-color@9.4.0)
       semver: 7.6.2
 
-  eslint-plugin-svelte@2.41.0(eslint@8.57.0(supports-color@9.4.0))(svelte@4.2.18):
+  eslint-plugin-svelte@2.41.0(eslint@8.57.0(supports-color@9.4.0))(svelte@4.2.19):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0(supports-color@9.4.0))
       '@jridgewell/sourcemap-codec': 1.4.15
@@ -2870,14 +2870,14 @@ snapshots:
       eslint-compat-utils: 0.5.1(eslint@8.57.0(supports-color@9.4.0))
       esutils: 2.0.3
       known-css-properties: 0.34.0
-      postcss: 8.4.39
-      postcss-load-config: 3.1.4(postcss@8.4.39)
-      postcss-safe-parser: 6.0.0(postcss@8.4.39)
+      postcss: 8.4.43
+      postcss-load-config: 3.1.4(postcss@8.4.43)
+      postcss-safe-parser: 6.0.0(postcss@8.4.43)
       postcss-selector-parser: 6.1.0
       semver: 7.6.2
-      svelte-eslint-parser: 0.39.2(svelte@4.2.18)
+      svelte-eslint-parser: 0.39.2(svelte@4.2.19)
     optionalDependencies:
-      svelte: 4.2.18
+      svelte: 4.2.19
     transitivePeerDependencies:
       - ts-node
 
@@ -3479,7 +3479,7 @@ snapshots:
       has-symbols: 1.0.3
       object-keys: 1.1.1
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.28.4):
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.28.4):
     dependencies:
       feather-icons: 4.29.2
       obsidian: 1.5.7(@codemirror/state@6.4.1)(@codemirror/view@6.28.4)
@@ -3593,27 +3593,27 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-load-config@3.1.4(postcss@8.4.39):
+  postcss-load-config@3.1.4(postcss@8.4.43):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.2
     optionalDependencies:
-      postcss: 8.4.39
+      postcss: 8.4.43
 
-  postcss-safe-parser@6.0.0(postcss@8.4.39):
+  postcss-safe-parser@6.0.0(postcss@8.4.43):
     dependencies:
-      postcss: 8.4.39
+      postcss: 8.4.43
 
-  postcss-scss@4.0.9(postcss@8.4.39):
+  postcss-scss@4.0.9(postcss@8.4.43):
     dependencies:
-      postcss: 8.4.39
+      postcss: 8.4.43
 
   postcss-selector-parser@6.1.0:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss@8.4.39:
+  postcss@8.4.43:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
@@ -3621,10 +3621,10 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-svelte@3.2.5(prettier@3.3.2)(svelte@4.2.18):
+  prettier-plugin-svelte@3.2.5(prettier@3.3.2)(svelte@4.2.19):
     dependencies:
       prettier: 3.3.2
-      svelte: 4.2.18
+      svelte: 4.2.19
 
   prettier@3.3.2: {}
 
@@ -3791,7 +3791,7 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
     dependencies:
       '@kwsites/file-exists': 1.1.1(supports-color@9.4.0)
       '@kwsites/promise-deferred': 1.1.1
@@ -3897,14 +3897,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-check@3.8.4(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18):
+  svelte-check@3.8.4(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
       picocolors: 1.0.1
       sade: 1.8.1
-      svelte: 4.2.18
-      svelte-preprocess: 5.1.4(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18)(typescript@5.5.3)
+      svelte: 4.2.19
+      svelte-preprocess: 5.1.4(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19)(typescript@5.5.3)
       typescript: 5.5.3
     transitivePeerDependencies:
       - '@babel/core'
@@ -3917,42 +3917,42 @@ snapshots:
       - stylus
       - sugarss
 
-  svelte-eslint-parser@0.39.2(svelte@4.2.18):
+  svelte-eslint-parser@0.39.2(svelte@4.2.19):
     dependencies:
       eslint-scope: 7.2.2
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      postcss: 8.4.39
-      postcss-scss: 4.0.9(postcss@8.4.39)
+      postcss: 8.4.43
+      postcss-scss: 4.0.9(postcss@8.4.43)
     optionalDependencies:
-      svelte: 4.2.18
+      svelte: 4.2.19
 
-  svelte-preprocess@5.1.4(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18)(typescript@5.5.3):
+  svelte-preprocess@5.1.4(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19)(typescript@5.5.3):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
       magic-string: 0.30.10
       sorcery: 0.11.1
       strip-indent: 3.0.0
-      svelte: 4.2.18
+      svelte: 4.2.19
     optionalDependencies:
-      postcss: 8.4.39
-      postcss-load-config: 3.1.4(postcss@8.4.39)
+      postcss: 8.4.43
+      postcss-load-config: 3.1.4(postcss@8.4.43)
       sass: 1.77.6
       typescript: 5.5.3
 
-  svelte-preprocess@6.0.1(postcss-load-config@3.1.4(postcss@8.4.39))(postcss@8.4.39)(sass@1.77.6)(svelte@4.2.18)(typescript@5.5.3):
+  svelte-preprocess@6.0.1(postcss-load-config@3.1.4(postcss@8.4.43))(postcss@8.4.43)(sass@1.77.6)(svelte@4.2.19)(typescript@5.5.3):
     dependencies:
       detect-indent: 6.1.0
       strip-indent: 3.0.0
-      svelte: 4.2.18
+      svelte: 4.2.19
     optionalDependencies:
-      postcss: 8.4.39
-      postcss-load-config: 3.1.4(postcss@8.4.39)
+      postcss: 8.4.43
+      postcss-load-config: 3.1.4(postcss@8.4.43)
       sass: 1.77.6
       typescript: 5.5.3
 
-  svelte@4.2.18:
+  svelte@4.2.19:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.4.15
