@@ -5,7 +5,10 @@ export class BranchModal extends FuzzySuggestModal<string> {
         value: string | undefined | PromiseLike<string | undefined>
     ) => void;
 
-    constructor(app: App, private readonly branches: string[]) {
+    constructor(
+        app: App,
+        private readonly branches: string[]
+    ) {
         super(app);
         this.setPlaceholder("Select branch to checkout");
     }

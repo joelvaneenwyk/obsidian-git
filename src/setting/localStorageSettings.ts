@@ -35,7 +35,10 @@ export class LocalStorageSettings {
     }
 
     setPassword(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "password", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "password",
+            value
+        );
     }
 
     getUsername(): string | null {
@@ -43,7 +46,10 @@ export class LocalStorageSettings {
     }
 
     setUsername(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "username", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "username",
+            value
+        );
     }
 
     getHostname(): string | null {
@@ -51,15 +57,23 @@ export class LocalStorageSettings {
     }
 
     setHostname(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "hostname", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "hostname",
+            value
+        );
     }
 
     getConflict(): boolean {
-        return this.plugin.app.loadLocalStorage(this.prefix + "conflict") == "true";
+        return (
+            this.plugin.app.loadLocalStorage(this.prefix + "conflict") == "true"
+        );
     }
 
     setConflict(value: boolean): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "conflict", `${value}`);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "conflict",
+            `${value}`
+        );
     }
 
     getLastAutoPull(): string | null {
@@ -67,7 +81,10 @@ export class LocalStorageSettings {
     }
 
     setLastAutoPull(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "lastAutoPull", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "lastAutoPull",
+            value
+        );
     }
 
     getLastAutoBackup(): string | null {
@@ -75,7 +92,10 @@ export class LocalStorageSettings {
     }
 
     setLastAutoBackup(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "lastAutoBackup", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "lastAutoBackup",
+            value
+        );
     }
 
     getLastAutoPush(): string | null {
@@ -83,7 +103,10 @@ export class LocalStorageSettings {
     }
 
     setLastAutoPush(value: string): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "lastAutoPush", value);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "lastAutoPush",
+            value
+        );
     }
 
     getGitPath(): string | null {
@@ -96,12 +119,17 @@ export class LocalStorageSettings {
 
     getPATHPaths(): string[] {
         return (
-            this.plugin.app.loadLocalStorage(this.prefix + "PATHPaths")?.split(":") ?? []
+            this.plugin.app
+                .loadLocalStorage(this.prefix + "PATHPaths")
+                ?.split(":") ?? []
         );
     }
 
     setPATHPaths(value: string[]): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "PATHPaths", value.join(":"));
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "PATHPaths",
+            value.join(":")
+        );
     }
 
     getEnvVars(): string[] {
@@ -118,10 +146,16 @@ export class LocalStorageSettings {
     }
 
     getPluginDisabled(): boolean {
-        return this.plugin.app.loadLocalStorage(this.prefix + "pluginDisabled") == "true";
+        return (
+            this.plugin.app.loadLocalStorage(this.prefix + "pluginDisabled") ==
+            "true"
+        );
     }
 
     setPluginDisabled(value: boolean): void {
-        return this.plugin.app.saveLocalStorage(this.prefix + "pluginDisabled", `${value}`);
+        return this.plugin.app.saveLocalStorage(
+            this.prefix + "pluginDisabled",
+            `${value}`
+        );
     }
 }
