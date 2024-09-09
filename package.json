@@ -59,7 +59,7 @@
         "css-color-converter": "^2.0.0",
         "debug": "^4.3.6",
         "deep-equal": "^2.2.3",
-        "diff": "^5.2.0",
+        "diff": "^7.0.0",
         "diff2html": "^3.4.48",
         "isomorphic-git": "^1.27.1",
         "js-sha256": "^0.11.0",
