@@ -34,10 +34,10 @@ importers:
         version: 0.11.0
       obsidian-community-lib:
         specifier: github:joelvaneenwyk/obsidian-community-lib#upgrade
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
       simple-git:
         specifier: github:joelvaneenwyk/obsidian-git-js#release
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
       supports-color:
         specifier: ^9.4.0
         version: 9.4.0
@@ -67,8 +67,8 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       '@types/node':
-        specifier: ^22.5.2
-        version: 22.5.2
+        specifier: ^22.5.5
+        version: 22.5.5
       '@typescript-eslint/eslint-plugin':
         specifier: 8.3.0
         version: 8.3.0(@typescript-eslint/parser@8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
@@ -390,8 +390,8 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node@22.5.2':
-    resolution: {integrity: sha512-acJsPTEqYqulZS/Yp/S3GgeE6GZ0qYODUR8aVr/DkhHQ8l9nd4j5x1/ZJy9/gHrRlFMqkO6i0I3E27Alu4jjPg==}
+  '@types/node@22.5.5':
+    resolution: {integrity: sha512-Xjs4y5UPO/CLdzpgR6GirZJx36yScjh73+2NlLlkFRSoQN8B0DpfXPdZGnvVmLRLOsqDpOfTNv7D9trgGhmOIA==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -1455,8 +1455,8 @@ packages:
     resolution: {integrity: sha512-byy+U7gp+FVwmyzKPYhW2h5l3crpmGsxl7X2s8y43IgxvG4g3QZ6CffDtsNQy1WsmZpQbO+ybo0AlW7TY6DcBQ==}
     engines: {node: '>= 0.4'}
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24}
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24:
+    resolution: {commit: e663de4f95c879b40613090da78ea599ff621d24, repo: git@github.com:joelvaneenwyk/obsidian-community-lib.git, type: git}
     version: 2.0.1
 
   obsidian@1.6.6:
@@ -1769,8 +1769,8 @@ packages:
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a}
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
+    resolution: {commit: 6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a, repo: git@github.com:joelvaneenwyk/obsidian-git-js.git, type: git}
     version: 3.16.1
 
   sorcery@0.11.1:
@@ -2285,7 +2285,7 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node@22.5.2':
+  '@types/node@22.5.5':
     dependencies:
       undici-types: 6.19.8
 
@@ -3464,7 +3464,7 @@ snapshots:
       has-symbols: 1.0.3
       object-keys: 1.1.1
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0):
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0):
     dependencies:
       feather-icons: 4.29.2
       obsidian: 1.6.6(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
@@ -3770,7 +3770,7 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
     dependencies:
       '@kwsites/file-exists': 1.1.1(supports-color@9.4.0)
       '@kwsites/promise-deferred': 1.1.1
