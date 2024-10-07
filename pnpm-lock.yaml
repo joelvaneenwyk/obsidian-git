@@ -34,10 +34,10 @@ importers:
         version: 0.11.0
       obsidian-community-lib:
         specifier: github:joelvaneenwyk/obsidian-community-lib#upgrade
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
       simple-git:
         specifier: github:joelvaneenwyk/obsidian-git-js#release
-        version: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
+        version: git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0)
       supports-color:
         specifier: ^9.4.0
         version: 9.4.0
@@ -71,10 +71,10 @@ importers:
         version: 22.5.2
       '@typescript-eslint/eslint-plugin':
         specifier: 8.3.0
-        version: 8.3.0(@typescript-eslint/parser@8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
+        version: 8.3.0(@typescript-eslint/parser@8.8.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
       '@typescript-eslint/parser':
-        specifier: 8.3.0
-        version: 8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
+        specifier: 8.8.0
+        version: 8.8.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
@@ -413,8 +413,8 @@ packages:
       typescript:
         optional: true
 
-  '@typescript-eslint/parser@8.3.0':
-    resolution: {integrity: sha512-h53RhVyLu6AtpUzVCYLPhZGL5jzTD9fZL+SYf/+hYOx2bDkyQXztXSc4tbvKYHzfMXExMLiL9CWqJmVz6+78IQ==}
+  '@typescript-eslint/parser@8.8.0':
+    resolution: {integrity: sha512-uEFUsgR+tl8GmzmLjRqz+VrDv4eoaMqMXW7ruXfgThaAShO9JTciKpEsB+TvnfFfbg5IpujgMXVV36gOJRLtZg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -425,6 +425,10 @@ packages:
 
   '@typescript-eslint/scope-manager@8.3.0':
     resolution: {integrity: sha512-mz2X8WcN2nVu5Hodku+IR8GgCOl4C0G/Z1ruaWN4dgec64kDBabuXyPAr+/RgJtumv8EEkqIzf3X2U5DUKB2eg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/scope-manager@8.8.0':
+    resolution: {integrity: sha512-EL8eaGC6gx3jDd8GwEFEV091210U97J0jeEHrAYvIYosmEGet4wJ+g0SYmLu+oRiAwbSA5AVrt6DxLHfdd+bUg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/type-utils@8.3.0':
@@ -440,8 +444,21 @@ packages:
     resolution: {integrity: sha512-y6sSEeK+facMaAyixM36dQ5NVXTnKWunfD1Ft4xraYqxP0lC0POJmIaL/mw72CUMqjY9qfyVfXafMeaUj0noWw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@typescript-eslint/types@8.8.0':
+    resolution: {integrity: sha512-QJwc50hRCgBd/k12sTykOJbESe1RrzmX6COk8Y525C9l7oweZ+1lw9JiU56im7Amm8swlz00DRIlxMYLizr2Vw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@typescript-eslint/typescript-estree@8.3.0':
     resolution: {integrity: sha512-Mq7FTHl0R36EmWlCJWojIC1qn/ZWo2YiWYc1XVtasJ7FIgjo0MVv9rZWXEE7IK2CGrtwe1dVOxWwqXUdNgfRCA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  '@typescript-eslint/typescript-estree@8.8.0':
+    resolution: {integrity: sha512-ZaMJwc/0ckLz5DaAZ+pNLmHv8AMVGtfWxZe/x2JVEkD5LnmhWiQMMcYT7IY7gkdJuzJ9P14fRy28lUrlDSWYdw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '*'
@@ -457,6 +474,10 @@ packages:
 
   '@typescript-eslint/visitor-keys@8.3.0':
     resolution: {integrity: sha512-RmZwrTbQ9QveF15m/Cl28n0LXD6ea2CjkhH5rQ55ewz3H24w+AMCJHPVYaZ8/0HoG8Z3cLLFFycRXxeO2tz9FA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/visitor-keys@8.8.0':
+    resolution: {integrity: sha512-8mq51Lx6Hpmd7HnA2fcHQo3YgfX1qbccxQOgZcb4tvasu//zXRaA1j5ZRFeCw/VRAdFi4mRM9DnZw0Nu0Q2d1g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   JSONStream@1.3.5:
@@ -1455,8 +1476,8 @@ packages:
     resolution: {integrity: sha512-byy+U7gp+FVwmyzKPYhW2h5l3crpmGsxl7X2s8y43IgxvG4g3QZ6CffDtsNQy1WsmZpQbO+ybo0AlW7TY6DcBQ==}
     engines: {node: '>= 0.4'}
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24}
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24:
+    resolution: {commit: e663de4f95c879b40613090da78ea599ff621d24, repo: git@github.com:joelvaneenwyk/obsidian-community-lib.git, type: git}
     version: 2.0.1
 
   obsidian@1.6.6:
@@ -1769,8 +1790,8 @@ packages:
   simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
-    resolution: {tarball: https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a}
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a:
+    resolution: {commit: 6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a, repo: git@github.com:joelvaneenwyk/obsidian-git-js.git, type: git}
     version: 3.16.1
 
   sorcery@0.11.1:
@@ -2297,10 +2318,10 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.5
 
-  '@typescript-eslint/eslint-plugin@8.3.0(@typescript-eslint/parser@8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)':
+  '@typescript-eslint/eslint-plugin@8.3.0(@typescript-eslint/parser@8.8.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)':
     dependencies:
       '@eslint-community/regexpp': 4.11.0
-      '@typescript-eslint/parser': 8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
+      '@typescript-eslint/parser': 8.8.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
       '@typescript-eslint/scope-manager': 8.3.0
       '@typescript-eslint/type-utils': 8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
       '@typescript-eslint/utils': 8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
@@ -2315,12 +2336,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)':
+  '@typescript-eslint/parser@8.8.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)':
     dependencies:
-      '@typescript-eslint/scope-manager': 8.3.0
-      '@typescript-eslint/types': 8.3.0
-      '@typescript-eslint/typescript-estree': 8.3.0(supports-color@9.4.0)(typescript@5.5.4)
-      '@typescript-eslint/visitor-keys': 8.3.0
+      '@typescript-eslint/scope-manager': 8.8.0
+      '@typescript-eslint/types': 8.8.0
+      '@typescript-eslint/typescript-estree': 8.8.0(supports-color@9.4.0)(typescript@5.5.4)
+      '@typescript-eslint/visitor-keys': 8.8.0
       debug: 4.3.6(supports-color@9.4.0)
       eslint: 9.9.1(supports-color@9.4.0)
     optionalDependencies:
@@ -2332,6 +2353,11 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.3.0
       '@typescript-eslint/visitor-keys': 8.3.0
+
+  '@typescript-eslint/scope-manager@8.8.0':
+    dependencies:
+      '@typescript-eslint/types': 8.8.0
+      '@typescript-eslint/visitor-keys': 8.8.0
 
   '@typescript-eslint/type-utils@8.3.0(eslint@9.9.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)':
     dependencies:
@@ -2347,10 +2373,27 @@ snapshots:
 
   '@typescript-eslint/types@8.3.0': {}
 
+  '@typescript-eslint/types@8.8.0': {}
+
   '@typescript-eslint/typescript-estree@8.3.0(supports-color@9.4.0)(typescript@5.5.4)':
     dependencies:
       '@typescript-eslint/types': 8.3.0
       '@typescript-eslint/visitor-keys': 8.3.0
+      debug: 4.3.6(supports-color@9.4.0)
+      fast-glob: 3.3.2
+      is-glob: 4.0.3
+      minimatch: 9.0.5
+      semver: 7.6.2
+      ts-api-utils: 1.3.0(typescript@5.5.4)
+    optionalDependencies:
+      typescript: 5.5.4
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/typescript-estree@8.8.0(supports-color@9.4.0)(typescript@5.5.4)':
+    dependencies:
+      '@typescript-eslint/types': 8.8.0
+      '@typescript-eslint/visitor-keys': 8.8.0
       debug: 4.3.6(supports-color@9.4.0)
       fast-glob: 3.3.2
       is-glob: 4.0.3
@@ -2376,6 +2419,11 @@ snapshots:
   '@typescript-eslint/visitor-keys@8.3.0':
     dependencies:
       '@typescript-eslint/types': 8.3.0
+      eslint-visitor-keys: 3.4.3
+
+  '@typescript-eslint/visitor-keys@8.8.0':
+    dependencies:
+      '@typescript-eslint/types': 8.8.0
       eslint-visitor-keys: 3.4.3
 
   JSONStream@1.3.5:
@@ -3464,7 +3512,7 @@ snapshots:
       has-symbols: 1.0.3
       object-keys: 1.1.1
 
-  obsidian-community-lib@https://codeload.github.com/joelvaneenwyk/obsidian-community-lib/tar.gz/e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0):
+  obsidian-community-lib@git+https://git@github.com:joelvaneenwyk/obsidian-community-lib.git#e663de4f95c879b40613090da78ea599ff621d24(@codemirror/state@6.4.1)(@codemirror/view@6.33.0):
     dependencies:
       feather-icons: 4.29.2
       obsidian: 1.6.6(@codemirror/state@6.4.1)(@codemirror/view@6.33.0)
@@ -3770,7 +3818,7 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
-  simple-git@https://codeload.github.com/joelvaneenwyk/obsidian-git-js/tar.gz/6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
+  simple-git@git+https://git@github.com:joelvaneenwyk/obsidian-git-js.git#6b9a2d899bc8256e38a1d6f0b8a88116ba2bf56a(supports-color@9.4.0):
     dependencies:
       '@kwsites/file-exists': 1.1.1(supports-color@9.4.0)
       '@kwsites/promise-deferred': 1.1.1
